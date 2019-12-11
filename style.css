@@ -111,10 +111,10 @@
 .social-icons li.paypal a:hover {
 	background-color: #32689a;
 }
-.social-icons li.picasa a {
-	background: url(icons/picasa.png) no-repeat 0 0;
+.social-icons li.instagram a {
+	background: url(icons/instagram.png) no-repeat 0 0;
 }
-.social-icons li.picasa a:hover {
+.social-icons li.instagram a:hover {
 	background-color: #444;
 }
 .social-icons li.pinterest a {
