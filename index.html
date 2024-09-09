@@ -1,70 +1,91 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>lhmrnfrzrfr</title>
-<link rel='stylesheet' id='BNS-Corner-Logo-Style-css'  href='style.css' type='text/css' media='screen' />
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Name - Software Developer</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <h1>Hi, I'm <span id="typed"></span></h1>
+    <p>Software Developer | Full Stack Engineer | Tech Enthusiast</p>
+  </header>
 
-<body bgcolor="#333333">
-  <center>
-    </br>
-  </br>
-  </br>
-  </br>
-  </br>
-  </br>
-  </br>
-  </br>
-  </br>
-  </br>
-<span style="font-family: 'Courier New', Courier, monospace; font-size: 18px; color: #FFF; font-weight: bold;">Halo, Saya Ilham Riana, </span>
-<br/>
-<span style="font-family: 'Courier New', Courier, monospace; font-size: 18px; color: #FFF;">Saya Masih Belajar Dalam Segala Hal. </span>
+  <!-- About Section -->
+  <section id="about" class="section">
+    <div class="container">
+      <h2>About Me</h2>
+      <p>I'm a passionate software developer with experience in building web applications using technologies like Python, JavaScript, and Django.</p>
+    </div>
+  </section>
 
-  </br>
-  </br>
-  </br>
-  </br>
-  </br>
-  </br>
-  </br>
-  </br>
-  </br>
-  </br>
-  </br>
-  </br>
-  </br>
-  </br>
-  </br>
-  </br>
-  </br>
-  </br>
+  <!-- Experience Section -->
+  <section id="experience" class="section grey lighten-4">
+    <div class="container">
+      <h2>Experience</h2>
+      <ul>
+        <li>Software Engineer at XYZ Corp - Developed APIs and web applications (2022 - Present)</li>
+        <!-- Add more experiences -->
+      </ul>
+    </div>
+  </section>
 
-<div class="social-icons" align: center>
-  <ul>
-<li class="twitter" style="background-color: #f0f0f0">
-<a href="https://twitter.com/lhmrnfrzrfr" target="_blank">Twitter</a>
-</li>
+  <!-- Projects Section -->
+  <section id="projects" class="section">
+    <div class="container">
+      <h2>Projects</h2>
+      <div class="row">
+        <!-- Project 1 -->
+        <div class="col s12 m6">
+          <div class="card">
+            <div class="card-image">
+              <img src="project1.jpg" alt="Project 1">
+            </div>
+            <div class="card-content">
+              <span class="card-title">Project 1</span>
+              <p>A short description of the project goes here.</p>
+            </div>
+            <div class="card-action">
+              <a href="https://github.com/yourusername/project1">View on GitHub</a>
+            </div>
+          </div>
+        </div>
+        <!-- Add more projects -->
+      </div>
+    </div>
+  </section>
 
-<li class="facebook" style="background-color: #f0f0f0">
-<a href="https://web.facebook.com/404system" target="_blank">Facebook</a>
-</li>
-    
-<li class="instagram" style="background-color: #f0f0f0">
-<a href="http://www.instagram.com/lhmrnfrzrfr" target="_blank">Instagram</a>
-</li>
+  <!-- Contact Section -->
+  <section id="contact" class="section grey lighten-4">
+    <div class="container">
+      <h2>Contact</h2>
+      <p>You can reach me via <a href="mailto:youremail@example.com">youremail@example.com</a>.</p>
+      <ul>
+        <li><a href="https://github.com/yourusername">GitHub</a></li>
+        <li><a href="https://www.linkedin.com/in/yourprofile">LinkedIn</a></li>
+      </ul>
+    </div>
+  </section>
 
-<li class="linkedin" style="background-color: #f0f0f0">
-<a href="https://www.linkedin.com/in/ilham-riana-548471147/" target="_blank">LinkedIN</a>
-</li>
+  <!-- Footer -->
+  <footer class="page-footer">
+    <div class="container">
+      <p>© 2024 Your Name. All Rights Reserved.</p>
+    </div>
+  </footer>
 
-</li>
-</ul>
-</div>
-</div>
-
-  </center>
+  <!-- JavaScript for Typed.js -->
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+  <script>
+    var typed = new Typed('#typed', {
+      strings: ["Your Name", "Software Developer", "Full Stack Engineer"],
+      typeSpeed: 50,
+      backSpeed: 50,
+      loop: true
+    });
+  </script>
 </body>
 </html>
