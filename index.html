@@ -73,6 +73,41 @@
 
         // Call the function when the page loads
         document.addEventListener('DOMContentLoaded', fetchDeepSeekData);
+
+        // Example: Fetch data from OpenAI API
+        async function fetchOpenAIData() {
+          try {
+            const response = await fetch('https://api.openai.com/v1/engines/davinci/completions', {
+              method: 'POST',
+              headers: {
+                'Authorization': 'Bearer sk-afad406319084d95b2ca90e435c3c555', // Replace with your actual API key
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                prompt: "Hello, world!",
+                max_tokens: 50
+              })
+            });
+
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            // Example: Display the fetched data in a specific section
+            const container = document.querySelector('.openai-data');
+            container.innerHTML = `
+              <h5>OpenAI Data:</h5>
+              <pre>${JSON.stringify(data, null, 2)}</pre>
+            `;
+          } catch (error) {
+            console.error('Error fetching OpenAI API data:', error);
+          }
+        }
+
+        // Call the function when the page loads
+        document.addEventListener('DOMContentLoaded', fetchOpenAIData);
       </script>
       <div class="row section">
         <div class="col s12 flow-text">
@@ -99,6 +134,12 @@
           <p>So the next time you see Ilham, don’t be fooled by the laid-back look. Behind his style, he hides a sharp
             mind that thrives on solving the toughest challenges. With every line of code, he turns chaos into
             creativity, always driving technology forward with fresh ideas and unstoppable passion.</p>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="row section">
+        <div class="col s12 openai-data">
+          <!-- OpenAI data will be displayed here -->
         </div>
       </div>
       <div class="divider"></div>
