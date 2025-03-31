@@ -36,6 +36,9 @@
   <meta name="msapplication-TileImage" content="/static/ms-icon-144x144.png">
   <meta name="theme-color" content="#ffffff">
 
+  <!-- Add this script to include the OpenAI library -->
+  <script src="https://cdn.jsdelivr.net/npm/openai-js"></script>
+
 </head>
 
 <body>
@@ -55,19 +58,10 @@
             const response = await openai.request({
               method: 'GET',
               url: '/v1/data', // Example endpoint, replace with the actual endpoint provided by DeepSeek API
-              headers: {
-                'Authorization': `Bearer ${openai.apiKey}`
-              }
             });
 
             if (!response) {
               throw new Error('No response from API');
-              const container = document.querySelector('.deepseek-data');
-              container.innerHTML = `
-              <h5>DeepSeek Data:</h5>
-              </br>
-              <h5>No response from API</h5>
-            `;
             }
 
             const data = response.data;
