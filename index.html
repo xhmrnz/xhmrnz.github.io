@@ -56,12 +56,18 @@
               method: 'GET',
               url: '/v1/data', // Example endpoint, replace with the actual endpoint provided by DeepSeek API
               headers: {
-              'Authorization': `Bearer ${openai.apiKey}`
+                'Authorization': `Bearer ${openai.apiKey}`
               }
             });
 
             if (!response) {
               throw new Error('No response from API');
+              const container = document.querySelector('.deepseek-data');
+              container.innerHTML = `
+              <h5>DeepSeek Data:</h5>
+              </br>
+              <h5>No response from API</h5>
+            `;
             }
 
             const data = response.data;
