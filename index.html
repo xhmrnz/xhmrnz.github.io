@@ -43,25 +43,35 @@
     <div class="container">
       <div class="divider"></div>
       <script>
+        // Initialize OpenAI with DeepSeek API
+        const openai = new OpenAI({
+          baseURL: 'https://api.deepseek.com',
+          apiKey: 'sk-afad406319084d95b2ca90e435c3c555' // Replace with your actual API key
+        });
+
         // Function to fetch data from DeepSeek API
         async function fetchDeepSeekData() {
           try {
-            const response = await fetch('DEEPSEEK_API_URL', {
+            const response = await openai.request({
+              method: 'GET',
+              url: '/v1/data', // Example endpoint, replace with the actual endpoint provided by DeepSeek API
               headers: {
-                'Authorization': 'Bearer YOUR_API_KEY'
+              'Authorization': `Bearer ${openai.apiKey}`
               }
-            }); // Replace with the actual API URL
-            if (!response.ok) {
-              throw new Error(`HTTP error! status: ${response.status}`);
+            });
+
+            if (!response) {
+              throw new Error('No response from API');
             }
-            const data = await response.json();
+
+            const data = response.data;
 
             // Example: Display the fetched data in a specific section
             const container = document.querySelector('.deepseek-data');
             container.innerHTML = `
-                <h5>DeepSeek Data:</h5>
-                <pre>${JSON.stringify(data, null, 2)}</pre>
-              `;
+              <h5>DeepSeek Data:</h5>
+              <pre>${JSON.stringify(data, null, 2)}</pre>
+            `;
           } catch (error) {
             console.error('Error fetching DeepSeek API data:', error);
           }
