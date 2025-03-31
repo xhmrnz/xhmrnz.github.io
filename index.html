@@ -45,7 +45,7 @@
       <script>
         async function fetchDeepSeekChat() {
           try {
-            const response = await fetch('https://api.deepseek.com/chat/completions', {
+            const response = await fetch('https://api.deepseek.com/v1', {
               method: 'POST',
               headers: {
                 'Authorization': 'Bearer <sk-afad406319084d95b2ca90e435c3c555>', // Replace with your actual DeepSeek API key
