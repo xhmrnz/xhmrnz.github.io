@@ -3,7 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hello World Landing Page</title>
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css"
+      rel="stylesheet"
+    />
+    <title>xhmrnz.me</title>
     <style>
       /* Reset some default styles */
       * {
@@ -112,6 +120,60 @@
         margin: 0 10px;
       }
 
+      .social-links a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 2rem;
+        transition: color 0.3s ease;
+      }
+
+      .social-links a:hover {
+        color: #007bff; /* Warna saat ikon dihover */
+      }
+
+      /* Styling untuk ikon sosial media */
+      .icon-container {
+        position: relative;
+        width: 24px; /* Ukuran gambar */
+        height: 24px;
+      }
+
+      .social-icon {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        transition: opacity 0.3s ease;
+      }
+
+      .social-icon.default-icon {
+        opacity: 1; /* Gambar default terlihat */
+      }
+
+      .social-icon.hover-icon {
+        opacity: 0; /* Gambar hover disembunyikan */
+      }
+
+      /* Efek hover pada ikon */
+      .social-links a:hover .default-icon {
+        opacity: 0; /* Menyembunyikan gambar default saat hover */
+      }
+
+      .social-links a:hover .hover-icon {
+        opacity: 1; /* Menampilkan gambar hover saat hover */
+      }
+
+      /* Media Queries for Small Screens (Smartphones) */
+      @media (max-width: 600px) {
+        /* Menyesuaikan ukuran ikon sosial media di perangkat mobile */
+        .social-links a {
+          font-size: 1.5rem;
+        }
+        .social-icon {
+          width: 20px;
+          height: 20px;
+        }
+      }
+
       /* CTA Button Styling */
       .cta-button {
         display: inline-block;
@@ -129,34 +191,24 @@
         background-color: #0056b3;
       }
 
-      /* Media Queries for Small Screens (Smartphones) */
-      @media (max-width: 600px) {
-        /* Heading Styles */
-        h3 {
-          font-size: 1.5em;
-        }
+      /* Tombol untuk menutupi tombol Built with Spline */
+      .cover-button {
+        position: absolute;
+        bottom: 20px; /* Sesuaikan dengan jarak yang Anda inginkan */
+        right: 25px; /* Sesuaikan dengan jarak yang Anda inginkan */
+        padding: 10px 20px;
+        background-color: #333; /* Warna latar belakang tombol */
+        color: white; /* Warna teks */
+        font-size: 1em;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        z-index: 2; /* Pastikan tombol ini berada di atas elemen lainnya */
+        transition: background-color 0.3s ease;
+      }
 
-        h5 {
-          font-size: 1em;
-        }
-
-        p {
-          font-size: 1em;
-        }
-
-        .responsive-img {
-          width: 100px; /* Smaller images on mobile */
-          margin-right: 10px;
-        }
-
-        .landing-container {
-          padding: 15px; /* Reduce padding for mobile screens */
-        }
-
-        .cta-button {
-          padding: 12px 25px;
-          font-size: 1em;
-        }
+      .cover-button:hover {
+        background-color: #555; /* Warna saat hover */
       }
     </style>
   </head>
@@ -171,6 +223,9 @@
         url="https://prod.spline.design/K-czgpnw8F5RfsgV/scene.splinecode"
       ></spline-viewer>
     </div>
+
+    <!-- Tombol untuk menutupi tombol Built with Spline -->
+    <button class="cover-button">Get in Touch</button>
 
     <!-- Landing Page Content -->
     <div class="landing-container">
@@ -187,61 +242,48 @@
           <p>
             <img
               class="responsive-img circle col s4 right"
-              src="/assets/img/6273886693702614301.jpg"
+              src="file:///home/blackhole/xhmrnz.github.io/assets/img/6273886693702614301.jpg"
               style="width: 150px; height: auto"
             />
           </p>
           <p>
-            Meet Ilham, a dedicated software engineer with a passion for
-            technology that has fueled his journey since his junior school days.
-            While others were learning the basics, Ilham was already diving deep
-            into the mysteries of programming languages, algorithms, and the
-            intricate mechanics behind computers. Over the past 5 years, he has
-            honed his craft in the world of software engineering, mastering the
-            art of code and system design. His love for all things tech has
-            transformed into a career that sees him solving complex problems for
-            people around him, always pushing himself to innovate and build
-            better solutions.
+            &nbsp;&nbsp;&nbsp;&nbsp;Meet Ilham, a dedicated software engineer
+            with a passion for technology that has fueled his journey since his
+            junior school days. While others were learning the basics, Ilham was
+            already diving deep into the mysteries of programming languages,
+            algorithms, and the intricate mechanics behind computers. Over the
+            past 5 years, he has honed his craft in the world of software
+            engineering, mastering the art of code and system design. His love
+            for all things tech has transformed into a career that sees him
+            solving complex problems for people around him, always pushing
+            himself to innovate and build better solutions.
           </p>
         </div>
       </div>
       <div class="divider"></div>
       <div class="col s12">
-        <ul
-          class="horizontal-list"
-          style="
-            display: flex;
-            justify-content: center;
-            list-style: none;
-            padding: 0;
-          "
-        >
-          <li style="margin: 0 10px">
+        <ul class="social-links">
+          <li>
             <a href="https://facebook.com/404system"
               ><i class="icon ion-logo-facebook"></i
             ></a>
           </li>
-          <li style="margin: 0 10px">
+          <li>
             <a href="https://twitter.com/igvyousomespace"
               ><i class="icon ion-logo-twitter"></i
             ></a>
           </li>
-          <li style="margin: 0 10px">
+          <li>
             <a href="https://linkedin.com/in/ilhamriana3"
               ><i class="icon ion-logo-linkedin"></i
             ></a>
           </li>
-          <li style="margin: 0 10px">
-            <a href="https://linkedin.com/in/ilhamriana"
-              ><i class="icon ion-logo-linkedin"></i
-            ></a>
-          </li>
-          <li style="margin: 0 10px">
+          <li>
             <a href="https://github.com/xhmrnz"
               ><i class="icon ion-logo-github"></i
             ></a>
           </li>
-          <li style="margin: 0 10px">
+          <li>
             <a href="https://instagram.com/xhmrnz"
               ><i class="icon ion-logo-instagram"></i
             ></a>
@@ -279,6 +321,19 @@
         backDelay: 1000,
         startDelay: 0,
       });
+
+      // Fungsi untuk menampilkan/menyembunyikan tombol sosial media
+      function toggleSocialLinks() {
+        const container = document.getElementById("social-links-container");
+        if (
+          container.style.display === "none" ||
+          container.style.display === ""
+        ) {
+          container.style.display = "block";
+        } else {
+          container.style.display = "none";
+        }
+      }
     </script>
   </body>
 </html>
