@@ -3,19 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="apple-touch-icon" sizes="57x57" href="/static/apple-icon-57x57.png">
-  <link rel="apple-touch-icon" sizes="60x60" href="/static/apple-icon-60x60.png">
-  <link rel="apple-touch-icon" sizes="72x72" href="/static/apple-icon-72x72.png">
-  <link rel="apple-touch-icon" sizes="76x76" href="/static/apple-icon-76x76.png">
-  <link rel="apple-touch-icon" sizes="114x114" href="/static/apple-icon-114x114.png">
-  <link rel="apple-touch-icon" sizes="120x120" href="/static/apple-icon-120x120.png">
-  <link rel="apple-touch-icon" sizes="144x144" href="/static/apple-icon-144x144.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="/static/apple-icon-152x152.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-icon-180x180.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="/static/android-icon-192x192.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="96x96" href="/static/favicon-96x96.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
 
     <title>Hello World Landing Page</title>
     <style>
@@ -36,6 +23,7 @@
         justify-content: center;
         align-items: center;
         position: relative;
+        background-color: #333;
       }
 
       /* Spline viewer as background */
@@ -50,22 +38,53 @@
 
       /* Landing Page Container */
       .landing-container {
-        text-align: center;
+        text-align: left;
         padding: 50px;
         background-color: transparent; /* Menjadikan background transparan */
         border-radius: 10px;
-        box-shadow: none; /* Menghapus bayangan agar tampak lebih transparan */
+        box-shadow: none;
         animation: fadeIn 2s ease-in-out;
-        z-index: 1; /* Konten tetap berada di atas */
+        z-index: 1;
         position: relative;
+        color: white;
+        max-width: 900px; /* Membuat kontainer lebih lebar */
       }
 
       /* Heading Styles */
-      h1,
-      h3,
-      h5,
+      h3 {
+        font-size: 2.5em;
+        font-weight: 700;
+        margin-bottom: 20px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #ffffff;
+      }
+
+      h5 {
+        font-size: 1.5em;
+        margin-bottom: 15px;
+        font-weight: 300;
+        letter-spacing: 0.5px;
+        color: #ffffff;
+      }
+
+      /* Text styling */
       p {
-        color: white; /* Mengubah teks menjadi putih */
+        font-size: 1.2em;
+        line-height: 1.8;
+        letter-spacing: 0.5px;
+        margin-bottom: 25px;
+        color: #ddd;
+      }
+
+      /* Image Styling */
+      .responsive-img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%; /* Membuat gambar menjadi bulat */
+        margin-right: 20px;
+        margin-bottom: 15px;
+        float: left;
       }
 
       /* Animation for fadeIn effect */
@@ -78,7 +97,19 @@
         }
       }
 
-      /* Button Styling */
+      /* Social Links Styling */
+      .social-links {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        margin-top: 40px;
+      }
+
+      .social-links li {
+        margin: 0 10px;
+      }
+
       .cta-button {
         display: inline-block;
         margin-top: 20px;
@@ -111,12 +142,6 @@
     <div class="landing-container">
       <div class="divider"></div>
       <div class="row section">
-        <div class="col s12 deepseek-chat">
-          <!-- DeepSeek chat response will be displayed here -->
-        </div>
-      </div>
-      <div class="divider"></div>
-      <div class="row section">
         <div class="col s12 flow-text">
           <h3>Ilham Riana</h3>
           <h5 style="color: #ffffff">
@@ -128,7 +153,8 @@
           <p>
             <img
               class="responsive-img circle col s4 right"
-              src="/assets/img/6273886693702614301.jpg"
+              src="file:///home/blackhole/xhmrnz.github.io/assets/img/6273886693702614301.jpg"
+              style="width: 150px; height: auto"
             />
           </p>
           <p>
@@ -143,7 +169,7 @@
             people around him, always pushing himself to innovate and build
             better solutions.
           </p>
-          <p>
+          <!-- <p>
             Ilham isn’t your typical polished professional. He often sports a
             disheveled, wavy hairstyle, black sunglasses, and an all-black
             wardrobe. His messy yet intentional look reflects his out-of-the-box
@@ -159,7 +185,7 @@
             solving the toughest challenges. With every small thing he had, he
             could turn into creativity, always driving technology forward with
             fresh ideas and unstoppable passion to learn.
-          </p>
+          </p> -->
         </div>
       </div>
       <div class="divider"></div>
