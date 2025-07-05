@@ -13,19 +13,17 @@
     />
     <title>xhmrnz.me</title>
     <style>
-      /* Reset some default styles */
-      * {
+      {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
       }
 
-      /* Body styling */
       body {
         font-family: Arial, sans-serif;
         height: 100vh;
         margin: 0;
-        overflow: hidden; /* Prevent scrolling */
+        overflow: hidden; 
         display: flex;
         justify-content: center;
         align-items: center;
@@ -33,20 +31,18 @@
         background-color: #333;
       }
 
-      /* Spline viewer as background */
       .spline-background {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        z-index: 0; /* Keep viewer behind content */
+        z-index: 0;
       }
 
-      /* Landing Page Container */
       .landing-container {
         text-align: left;
-        padding: 20px; /* Adjusted padding */
+        padding: 20px; 
         background-color: transparent;
         border-radius: 10px;
         box-shadow: none;
@@ -54,12 +50,11 @@
         z-index: 1;
         position: relative;
         color: white;
-        max-width: 90%; /* Make container more fluid */
-        width: 100%; /* Ensure full width */
+        max-width: 90%; 
+        width: 100%; 
         box-sizing: border-box;
       }
 
-      /* Heading Styles */
       h3 {
         font-size: 2em;
         font-weight: 600;
@@ -76,8 +71,6 @@
         letter-spacing: 0.5px;
         color: #ffffff;
       }
-
-      /* Text styling */
       p {
         font-size: 1em;
         line-height: 1.6;
@@ -85,19 +78,15 @@
         margin-bottom: 15px;
         color: #ddd;
       }
-
-      /* Image Styling */
       .responsive-img {
-        width: 80%; /* Make the image responsive */
-        max-width: 120px; /* Limit image size */
+        width: 80%;
+        max-width: 120px;
         height: auto;
-        border-radius: 50%; /* Circular image */
+        border-radius: 50%;
         margin-right: 10px;
         margin-bottom: 5px;
         float: left;
       }
-
-      /* Animation for fadeIn effect */
       @keyframes fadeIn {
         0% {
           opacity: 0;
@@ -106,8 +95,6 @@
           opacity: 1;
         }
       }
-
-      /* Social Links Styling */
       .social-links {
         list-style: none;
         padding: 0;
@@ -115,26 +102,21 @@
         justify-content: left;
         margin-top: 30px;
       }
-
       .social-links li {
         margin: 0 10px;
       }
-
       .social-links a {
         color: #fff;
         text-decoration: none;
         font-size: 2rem;
         transition: color 0.3s ease;
       }
-
       .social-links a:hover {
-        color: #007bff; /* Warna saat ikon dihover */
+        color: #007bff; 
       }
-
-      /* Styling untuk ikon sosial media */
       .icon-container {
         position: relative;
-        width: 8px; /* Ukuran gambar */
+        width: 8px;
         height: 8px;
       }
 
@@ -144,27 +126,22 @@
         height: 100%;
         transition: opacity 0.3s ease;
       }
-
       .social-icon.default-icon {
-        opacity: 1; /* Gambar default terlihat */
+        opacity: 1;
       }
-
       .social-icon.hover-icon {
-        opacity: 0; /* Gambar hover disembunyikan */
+        opacity: 0;
       }
-
-      /* Efek hover pada ikon */
       .social-links a:hover .default-icon {
-        opacity: 0; /* Menyembunyikan gambar default saat hover */
+        opacity: 0; 
       }
-
       .social-links a:hover .hover-icon {
-        opacity: 1; /* Menampilkan gambar hover saat hover */
+        opacity: 1;
       }
 
       /* Media Queries for Small Screens (Smartphones) */
       @media (max-width: 400px) {
-        /* Menyesuaikan ukuran ikon sosial media di perangkat mobile */
+
         .social-links a {
           font-size: 1rem;
         }
@@ -191,29 +168,28 @@
         background-color: #0056b3;
       }
 
-      /* Tombol untuk menutupi tombol Built with Spline */
       .cover-button {
         position: absolute;
-        bottom: 20px; /* Sesuaikan dengan jarak yang Anda inginkan */
-        right: 25px; /* Sesuaikan dengan jarak yang Anda inginkan */
+        bottom: 20px;
+        right: 25px;
         padding: 10px 20px;
-        background-color: #333; /* Warna latar belakang tombol */
-        color: white; /* Warna teks */
+        background-color: #333;
+        color: white;
         font-size: 1em;
         border: none;
         border-radius: 5px;
         cursor: pointer;
-        z-index: 2; /* Pastikan tombol ini berada di atas elemen lainnya */
+        z-index: 2;
         transition: background-color 0.3s ease;
       }
 
       .cover-button:hover {
-        background-color: #555; /* Warna saat hover */
+        background-color: #555;
       }
     </style>
   </head>
   <body>
-    <!-- Spline viewer background -->
+    
     <div class="spline-background">
       <script
         type="module"
@@ -224,10 +200,8 @@
       ></spline-viewer>
     </div>
 
-    <!-- Tombol untuk menutupi tombol Built with Spline -->
     <button class="cover-button">Get in Touch</button>
 
-    <!-- Landing Page Content -->
     <div class="landing-container">
       <div class="row section">
         <div class="col s12 flow-text">
@@ -320,19 +294,6 @@
         backDelay: 1000,
         startDelay: 0,
       });
-
-      // Fungsi untuk menampilkan/menyembunyikan tombol sosial media
-      function toggleSocialLinks() {
-        const container = document.getElementById("social-links-container");
-        if (
-          container.style.display === "none" ||
-          container.style.display === ""
-        ) {
-          container.style.display = "block";
-        } else {
-          container.style.display = "none";
-        }
-      }
     </script>
   </body>
 </html>
