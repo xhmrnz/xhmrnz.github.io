@@ -172,43 +172,37 @@
 
     <script src="assets/vendor/typed.js/typed.min.js"></script>
     <script>
-      const fallbackQuotes = [
-        "Breathe, and rebuild slowly.",
-        "Strength from within.",
-        "Let kindness guide you.",
-        "Growth after pain.",
-        "Your journey matters.",
-        "Embrace the scars.",
-        "Resilience is key.",
-        "Believe in your strength.",
-        "You are stronger than you think.",
-        "Small steps forward.",
-        "Light after darkness.",
-        "Begin again, gently.",
-        "Be kind, be brave.",
-        "Be your own hero.",
-      ];
-
-      function startTyped(strings) {
-        new Typed(".typing", {
-          strings: strings,
-          loop: true,
-          typeSpeed: 50,
-          backSpeed: 10,
-          backDelay: 2000,
-        });
-      }
+      var typedInstance = new Typed(“.typing”, {
+        strings: [“Loading quote...”],
+        typeSpeed: 50,
+        showCursor: true,
+      });
 
       fetch(“https://type.fit/api/quotes”)
         .then(function(res) { return res.json(); })
         .then(function(data) {
           var quote = data[Math.floor(Math.random() * data.length)];
           var author = quote.author ? quote.author.replace(“, type.fit”, “”) : “Unknown”;
-          var strings = [““” + quote.text + “” — “ + author].concat(fallbackQuotes);
-          startTyped(strings);
+          typedInstance.destroy();
+          document.querySelector(“.typing”).textContent = “”;
+          new Typed(“.typing”, {
+            strings: [““” + quote.text + “” — “ + author],
+            loop: true,
+            typeSpeed: 50,
+            backSpeed: 10,
+            backDelay: 2000,
+          });
         })
         .catch(function() {
-          startTyped(fallbackQuotes);
+          typedInstance.destroy();
+          document.querySelector(“.typing”).textContent = “”;
+          new Typed(“.typing”, {
+            strings: [“Be kind, be brave.”, “Your journey matters.”, “Small steps forward.”],
+            loop: true,
+            typeSpeed: 50,
+            backSpeed: 10,
+            backDelay: 2000,
+          });
         });
     </script>
   </body>
