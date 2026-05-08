@@ -3,18 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet"
-    />
-    <link
-      href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css"
-      rel="stylesheet"
-    />
+    <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet" />
     <title>xhmrnz.me</title>
     <link rel="icon" href="assets/img/black-hole.gif" type="image/gif" />
     <style>
-      {
+      * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
@@ -23,8 +16,7 @@
       body {
         font-family: Arial, sans-serif;
         height: 100vh;
-        margin: 0;
-        overflow: hidden; 
+        overflow: hidden;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -43,17 +35,12 @@
 
       .landing-container {
         text-align: left;
-        padding: 20px; 
-        background-color: transparent;
-        border-radius: 10px;
-        box-shadow: none;
+        padding: 20px;
         animation: fadeIn 2s ease-in-out;
         z-index: 1;
         position: relative;
-        color: white;
-        max-width: 90%; 
-        width: 100%; 
-        box-sizing: border-box;
+        max-width: 90%;
+        width: 100%;
       }
 
       h3 {
@@ -68,10 +55,11 @@
       h5 {
         font-size: 1em;
         margin-bottom: 15px;
-        font-weight: 250;
+        font-weight: 300;
         letter-spacing: 0.5px;
         color: #ffffff;
       }
+
       p {
         font-size: 1em;
         line-height: 1.6;
@@ -79,94 +67,44 @@
         margin-bottom: 15px;
         color: #ddd;
       }
-      .responsive-img {
-        width: 80%;
-        max-width: 120px;
+
+      .profile-photo {
+        width: 120px;
         height: auto;
         border-radius: 50%;
-        margin-right: 10px;
-        margin-bottom: 5px;
         float: left;
+        margin-right: 15px;
+        margin-bottom: 5px;
       }
+
       @keyframes fadeIn {
-        0% {
-          opacity: 0;
-        }
-        100% {
-          opacity: 1;
-        }
+        from { opacity: 0; }
+        to { opacity: 1; }
       }
+
       .social-links {
         list-style: none;
-        padding: 0;
         display: flex;
-        justify-content: left;
         margin-top: 30px;
       }
+
       .social-links li {
         margin: 0 10px;
       }
+
+      .social-links li:first-child {
+        margin-left: 0;
+      }
+
       .social-links a {
         color: #fff;
         text-decoration: none;
         font-size: 2rem;
         transition: color 0.3s ease;
       }
+
       .social-links a:hover {
-        color: #007bff; 
-      }
-      .icon-container {
-        position: relative;
-        width: 8px;
-        height: 8px;
-      }
-
-      .social-icon {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        transition: opacity 0.3s ease;
-      }
-      .social-icon.default-icon {
-        opacity: 1;
-      }
-      .social-icon.hover-icon {
-        opacity: 0;
-      }
-      .social-links a:hover .default-icon {
-        opacity: 0; 
-      }
-      .social-links a:hover .hover-icon {
-        opacity: 1;
-      }
-
-      /* Media Queries for Small Screens (Smartphones) */
-      @media (max-width: 400px) {
-
-        .social-links a {
-          font-size: 1rem;
-        }
-        .social-icon {
-          width: 8px;
-          height: 8px;
-        }
-      }
-
-      /* CTA Button Styling */
-      .cta-button {
-        display: inline-block;
-        margin-top: 20px;
-        padding: 15px 30px;
-        font-size: 1.2em;
-        background-color: #007bff;
-        color: #fff;
-        text-decoration: none;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
-      }
-
-      .cta-button:hover {
-        background-color: #0056b3;
+        color: #007bff;
       }
 
       .cover-button {
@@ -174,7 +112,7 @@
         bottom: 20px;
         right: 25px;
         padding: 10px 20px;
-        background-color: #000000;
+        background-color: #000;
         color: white;
         font-size: 1em;
         border: none;
@@ -187,90 +125,53 @@
       .cover-button:hover {
         background-color: #555;
       }
+
+      @media (max-width: 400px) {
+        .social-links a {
+          font-size: 1rem;
+        }
+      }
     </style>
   </head>
   <body>
-    
     <div class="spline-background">
-      <script
-        type="module"
-        src="https://unpkg.com/@splinetool/viewer@1.10.22/build/spline-viewer.js"
-      ></script>
-      <spline-viewer
-        url="https://prod.spline.design/K-czgpnw8F5RfsgV/scene.splinecode"
-      ></spline-viewer>
+      <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.22/build/spline-viewer.js"></script>
+      <spline-viewer url="https://prod.spline.design/K-czgpnw8F5RfsgV/scene.splinecode"></spline-viewer>
     </div>
 
     <button class="cover-button">Get in Touch</button>
 
     <div class="landing-container">
-      <div class="row section">
-        <div class="col s12 flow-text">
-          <h3>Ilham Riana</h3>
-          <h5 style="color: #ffffff">
-            <span
-              class="typing"
-              style="font-weight: 300; color: #ffffff"
-            ></span>
-          </h5>
-          <p>
-            <img
-              class="responsive-img circle col s4 right"
-              src="assets/img/6273886693702614301.jpg"
-              style="width: 120px; height: auto"
-            />
-          </p>
-          <p>
-            &nbsp;&nbsp;&nbsp;&nbsp;Meet Ilham, a dedicated software engineer
-            with a passion for technology that has fueled his journey since his
-            junior school days. While others were learning the basics, Ilham was
-            already diving deep into the mysteries of programming languages,
-            algorithms, and the intricate mechanics behind computers. Over the
-            past 5 years, he has honed his craft in the world of software
-            engineering, mastering the art of code and system design. His love
-            for all things tech has transformed into a career that sees him
-            solving complex problems for people around him, always pushing
-            himself to innovate and build better solutions.
-          </p>
-        </div>
-      </div>
-      <div class="divider"></div>
-      <div class="col s12">
-        <ul class="social-links">
-          <li>
-            <a href="https://facebook.com/404system"
-              ><i class="icon ion-logo-facebook"></i
-            ></a>
-          </li>
-          <li>
-            <a href="https://instagram.com/xhmrnz"
-              ><i class="icon ion-logo-instagram"></i
-            ></a>
-          </li>
-          <li>
-            <a href="https://x.com/igvyousomespace"
-              ><i class="icon ion-logo-twitter"></i
-            ></a>
-          </li>
-          <li>
-            <a href="https://linkedin.com/in/ilhamriana"
-              ><i class="icon ion-logo-linkedin"></i
-            ></a>
-          </li>
-          <li>
-            <a href="https://github.com/xhmrnz"
-              ><i class="icon ion-logo-github"></i
-            ></a>
-          </li>
-        </ul>
-      </div>
+      <h3>Ilham Riana</h3>
+      <h5><span class="typing"></span></h5>
+      <img
+        class="profile-photo"
+        src="assets/img/6273886693702614301.jpg"
+        alt="Ilham Riana"
+      />
+      <p>
+        Meet Ilham, a dedicated software engineer with a passion for technology
+        that has fueled his journey since his junior school days. While others
+        were learning the basics, Ilham was already diving deep into the
+        mysteries of programming languages, algorithms, and the intricate
+        mechanics behind computers. Over the past 5 years, he has honed his
+        craft in the world of software engineering, mastering the art of code
+        and system design. His love for all things tech has transformed into a
+        career that sees him solving complex problems for people around him,
+        always pushing himself to innovate and build better solutions.
+      </p>
+      <ul class="social-links">
+        <li><a href="https://facebook.com/404system"><i class="icon ion-logo-facebook"></i></a></li>
+        <li><a href="https://instagram.com/xhmrnz"><i class="icon ion-logo-instagram"></i></a></li>
+        <li><a href="https://x.com/igvyousomespace"><i class="icon ion-logo-twitter"></i></a></li>
+        <li><a href="https://linkedin.com/in/ilhamriana"><i class="icon ion-logo-linkedin"></i></a></li>
+        <li><a href="https://github.com/xhmrnz"><i class="icon ion-logo-github"></i></a></li>
+      </ul>
     </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="assets/vendor/typed.js/typed.min.js"></script>
-    <script type="text/javascript">
-      var typed = new Typed(".typing", {
+    <script>
+      new Typed(".typing", {
         strings: [
           "Breathe, and rebuild slowly..",
           "Strength from within...",
@@ -293,7 +194,6 @@
         typeSpeed: 50,
         backSpeed: 10,
         backDelay: 1000,
-        startDelay: 0,
       });
     </script>
   </body>
