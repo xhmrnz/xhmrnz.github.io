@@ -217,11 +217,12 @@
         });
       }
 
-      fetch("https://zenquotes.io/api/random")
+      fetch(“https://zenquotes.io/api/random”)
         .then(function(res) { return res.json(); })
         .then(function(data) {
           var quote = data[0];
-          startTyped(["“" + quote.q + "” — " + quote.a]);
+          var strings = [““” + quote.q + “” — “ + quote.a].concat(fallbackQuotes);
+          startTyped(strings);
         })
         .catch(function() {
           startTyped(fallbackQuotes);
