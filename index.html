@@ -217,11 +217,11 @@
         });
       }
 
-      fetch(“https://zenquotes.io/api/random”)
+      fetch(“https://api.allorigins.win/raw?url=https://zenquotes.io/api/random”)
         .then(function(res) { return res.json(); })
         .then(function(data) {
           var quote = data[0];
-          var strings = [““” + quote.q + “” — “ + quote.a].concat(fallbackQuotes);
+          var strings = [““” + quote.q.trim() + “” — “ + quote.a].concat(fallbackQuotes);
           startTyped(strings);
         })
         .catch(function() {
