@@ -163,7 +163,7 @@
 
     <div class="landing-container">
       <h3>Ilham Riana</h3>
-      <h5><span class="typing">Loading inspirational quote...</span></h5>
+      <h5><span class="typing"></span></h5>
       <img
         class="profile-photo"
         src="assets/img/6273886693702614301.jpg"
@@ -191,26 +191,9 @@
 
     <script src="assets/vendor/typed.js/typed.min.js"></script>
     <script>
-      const fallbackQuotes = [
-        "Breathe, and rebuild slowly.",
-        "Strength from within.",
-        "Let kindness guide you.",
-        "Growth after pain.",
-        "Your journey matters.",
-        "Embrace the scars.",
-        "Resilience is key.",
-        "Believe in your strength.",
-        "You are stronger than you think.",
-        "Small steps forward.",
-        "Light after darkness.",
-        "Begin again, gently.",
-        "Be kind, be brave.",
-        "Be your own hero.",
-      ];
-
       let typedInstance = null;
 
-      function startTypingEffect(quotesArray) {
+      function startTypingEffect(quote) {
         // Destroy previous instance if exists
         if (typedInstance) {
           typedInstance.destroy();
@@ -220,7 +203,7 @@
         setTimeout(function() {
           try {
             typedInstance = new Typed(".typing", {
-              strings: quotesArray,
+              strings: [quote],
               typeSpeed: 50,
               backSpeed: 10,
               backDelay: 3000,
@@ -228,14 +211,13 @@
               showCursor: true
             });
           } catch(e) {
-            document.querySelector(".typing").textContent = quotesArray[0];
+            document.querySelector(".typing").textContent = quote;
           }
         }, 100);
       }
 
       function fetchQuoteFromAPI() {
         try {
-          // Try to fetch with timeout
           const controller = new AbortController();
           const timeoutId = setTimeout(() => controller.abort(), 5000);
 
@@ -250,23 +232,24 @@
           .then(data => {
             if (data && data.length > 0 && data[0].q && data[0].a) {
               const quote = data[0].q + " - " + data[0].a;
-              const quotesList = [quote].concat(fallbackQuotes);
-              startTypingEffect(quotesList);
+              startTypingEffect(quote);
             } else {
               throw new Error("Invalid data format");
             }
           })
           .catch(err => {
-            startTypingEffect(fallbackQuotes);
+            console.error("Error fetching quote:", err);
+            // If API fails, just show empty or a simple message
+            document.querySelector(".typing").textContent = "Loading...";
           });
         } catch(e) {
-          startTypingEffect(fallbackQuotes);
+          console.error("Exception:", e);
+          document.querySelector(".typing").textContent = "Loading...";
         }
       }
 
       // Start the typing effect
       window.addEventListener('load', function() {
-        // Give typed.js time to load
         setTimeout(fetchQuoteFromAPI, 500);
       });
 
