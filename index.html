@@ -199,10 +199,12 @@
         });
       }
 
-      fetch("https://dummyjson.com/quotes/random")
+      fetch(“https://type.fit/api/quotes”)
         .then(function(res) { return res.json(); })
         .then(function(data) {
-          var strings = ["“" + data.quote + "” — " + data.author].concat(fallbackQuotes);
+          var quote = data[Math.floor(Math.random() * data.length)];
+          var author = quote.author ? quote.author.replace(“, type.fit”, “”) : “Unknown”;
+          var strings = [““” + quote.text + “” — “ + author].concat(fallbackQuotes);
           startTyped(strings);
         })
         .catch(function() {
