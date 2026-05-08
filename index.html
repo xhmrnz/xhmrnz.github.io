@@ -127,24 +127,6 @@
         background-color: #555;
       }
 
-      .quote-credit {
-        position: absolute;
-        bottom: 20px;
-        left: 25px;
-        font-size: 0.7em;
-        color: rgba(255, 255, 255, 0.35);
-        z-index: 2;
-      }
-
-      .quote-credit a {
-        color: rgba(255, 255, 255, 0.35);
-        text-decoration: none;
-      }
-
-      .quote-credit a:hover {
-        color: rgba(255, 255, 255, 0.7);
-      }
-
       @media (max-width: 400px) {
         .social-links a {
           font-size: 1rem;
@@ -159,7 +141,6 @@
     </div>
 
     <button class="cover-button">Get in Touch</button>
-    <p class="quote-credit"><a href="https://quotable.io/" target="_blank">Quotes by Quotable.io</a></p>
 
     <div class="landing-container">
       <h3>Ilham Riana</h3>
@@ -191,72 +172,42 @@
 
     <script src="assets/vendor/typed.js/typed.min.js"></script>
     <script>
-      let typedInstance = null;
+      const fallbackQuotes = [
+        "Breathe, and rebuild slowly.",
+        "Strength from within.",
+        "Let kindness guide you.",
+        "Growth after pain.",
+        "Your journey matters.",
+        "Embrace the scars.",
+        "Resilience is key.",
+        "Believe in your strength.",
+        "You are stronger than you think.",
+        "Small steps forward.",
+        "Light after darkness.",
+        "Begin again, gently.",
+        "Be kind, be brave.",
+        "Be your own hero.",
+      ];
 
-      function startTypingEffect(quote) {
-        // Destroy previous instance if exists
-        if (typedInstance) {
-          typedInstance.destroy();
-        }
-        
-        // Wait for DOM to be ready
-        setTimeout(function() {
-          try {
-            typedInstance = new Typed(".typing", {
-              strings: [quote],
-              typeSpeed: 50,
-              backSpeed: 10,
-              backDelay: 3000,
-              loop: true,
-              showCursor: true
-            });
-          } catch(e) {
-            document.querySelector(".typing").textContent = quote;
-          }
-        }, 100);
+      function startTyped(strings) {
+        new Typed(".typing", {
+          strings: strings,
+          loop: true,
+          typeSpeed: 50,
+          backSpeed: 10,
+          backDelay: 2000,
+        });
       }
 
-      function fetchQuoteFromAPI() {
-        try {
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 8000);
-
-          fetch("https://api.quotable.io/random", {
-            signal: controller.signal
-          })
-          .then(res => {
-            clearTimeout(timeoutId);
-            if (!res.ok) throw new Error("API error: " + res.status);
-            return res.json();
-          })
-          .then(data => {
-            if (data && data.content && data.author) {
-              const quote = """ + data.content + "" — " + data.author;
-              startTypingEffect(quote);
-            } else {
-              throw new Error("Invalid data format");
-            }
-          })
-          .catch(err => {
-            clearTimeout(timeoutId);
-            console.error("Error fetching quote:", err);
-            document.querySelector(".typing").textContent = "Ready to inspire...";
-          });
-        } catch(e) {
-          console.error("Exception:", e);
-          document.querySelector(".typing").textContent = "Ready to inspire...";
-        }
-      }
-
-      // Start the typing effect
-      window.addEventListener('load', function() {
-        setTimeout(fetchQuoteFromAPI, 500);
-      });
-
-      // Fallback if window load doesn't trigger
-      if (document.readyState === 'complete') {
-        setTimeout(fetchQuoteFromAPI, 500);
-      }
+      fetch("https://dummyjson.com/quotes/random")
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+          var strings = ["“" + data.quote + "” — " + data.author].concat(fallbackQuotes);
+          startTyped(strings);
+        })
+        .catch(function() {
+          startTyped(fallbackQuotes);
+        });
     </script>
   </body>
 </html>
