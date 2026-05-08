@@ -159,7 +159,7 @@
     </div>
 
     <button class="cover-button">Get in Touch</button>
-    <p class="quote-credit"><a href="https://zenquotes.io/" target="_blank">Quotes by ZenQuotes.io</a></p>
+    <p class="quote-credit"><a href="https://quotable.io/" target="_blank">Quotes by Quotable.io</a></p>
 
     <div class="landing-container">
       <h3>Ilham Riana</h3>
@@ -219,32 +219,32 @@
       function fetchQuoteFromAPI() {
         try {
           const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 5000);
+          const timeoutId = setTimeout(() => controller.abort(), 8000);
 
-          fetch("https://zenquotes.io/api/random", {
+          fetch("https://api.quotable.io/random", {
             signal: controller.signal
           })
           .then(res => {
             clearTimeout(timeoutId);
-            if (!res.ok) throw new Error("API error");
+            if (!res.ok) throw new Error("API error: " + res.status);
             return res.json();
           })
           .then(data => {
-            if (data && data.length > 0 && data[0].q && data[0].a) {
-              const quote = data[0].q + " - " + data[0].a;
+            if (data && data.content && data.author) {
+              const quote = """ + data.content + "" — " + data.author;
               startTypingEffect(quote);
             } else {
               throw new Error("Invalid data format");
             }
           })
           .catch(err => {
+            clearTimeout(timeoutId);
             console.error("Error fetching quote:", err);
-            // If API fails, just show empty or a simple message
-            document.querySelector(".typing").textContent = "Loading...";
+            document.querySelector(".typing").textContent = "Ready to inspire...";
           });
         } catch(e) {
           console.error("Exception:", e);
-          document.querySelector(".typing").textContent = "Loading...";
+          document.querySelector(".typing").textContent = "Ready to inspire...";
         }
       }
 
