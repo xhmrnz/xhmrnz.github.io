@@ -207,9 +207,17 @@
         "Be your own hero.",
       ];
 
+      let typedInstance = null;
+
       function startTyped(strings) {
         console.log("Starting Typed with strings:", strings);
-        new Typed(".typing", {
+        
+        // Destroy previous instance if exists
+        if (typedInstance) {
+          typedInstance.destroy();
+        }
+        
+        typedInstance = new Typed(".typing", {
           strings: strings,
           loop: true,
           typeSpeed: 50,
@@ -218,45 +226,69 @@
         });
       }
 
-      // Method 1: Try direct fetch to zenquotes.io with better error handling
       function fetchFromZenQuotes() {
-        console.log("Attempting to fetch from ZenQuotes...");
+        console.log("Attempting to fetch from ZenQuotes API...");
+        
+        // Create AbortController with 8 second timeout
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 8000);
+
         fetch("https://zenquotes.io/api/random", {
           method: "GET",
           headers: {
             "Accept": "application/json",
-          }
+          },
+          signal: controller.signal
         })
           .then(function(res) {
+            clearTimeout(timeoutId);
             console.log("Response status:", res.status);
-            if (!res.ok) throw new Error("Network response was not ok");
+            if (!res.ok) throw new Error("Network response was not ok: " + res.status);
             return res.json();
           })
           .then(function(data) {
-            console.log("Received data:", data);
-            if (data && data[0] && data[0].q && data[0].a) {
-              var quote = data[0];
-              var quoteText = """ + quote.q.trim() + "" — " + quote.a;
-              console.log("Quote extracted:", quoteText);
-              var strings = [quoteText].concat(fallbackQuotes);
-              startTyped(strings);
+            console.log("Received data from ZenQuotes:", data);
+            
+            if (data && Array.isArray(data) && data.length > 0) {
+              const quote = data[0];
+              console.log("Quote object:", quote);
+              
+              if (quote.q && quote.a) {
+                const quoteText = """ + quote.q.trim() + "" — " + quote.a;
+                console.log("✓ Quote successfully extracted:", quoteText);
+                const strings = [quoteText].concat(fallbackQuotes);
+                startTyped(strings);
+              } else {
+                throw new Error("Quote or Author missing");
+              }
             } else {
-              console.warn("Data format unexpected, using fallback");
-              startTyped(fallbackQuotes);
+              throw new Error("Invalid data structure");
             }
           })
           .catch(function(error) {
-            console.error("Error fetching from ZenQuotes:", error);
-            console.log("Falling back to local quotes...");
+            clearTimeout(timeoutId);
+            console.error("✗ Error fetching from ZenQuotes:", error.message);
+            console.log("Using fallback quotes...");
             startTyped(fallbackQuotes);
           });
       }
 
-      // Wait for page to fully load, then start the typing effect
+      // Ensure Typed.js library is loaded before starting
+      function initializeTyping() {
+        if (typeof Typed !== "undefined") {
+          console.log("✓ Typed.js library loaded successfully");
+          fetchFromZenQuotes();
+        } else {
+          console.warn("⚠ Typed.js not loaded yet, retrying...");
+          setTimeout(initializeTyping, 500);
+        }
+      }
+
+      // Start when DOM is ready
       if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", fetchFromZenQuotes);
+        document.addEventListener("DOMContentLoaded", initializeTyping);
       } else {
-        fetchFromZenQuotes();
+        initializeTyping();
       }
     </script>
   </body>
