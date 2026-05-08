@@ -208,6 +208,7 @@
       ];
 
       function startTyped(strings) {
+        console.log("Starting Typed with strings:", strings);
         new Typed(".typing", {
           strings: strings,
           loop: true,
@@ -217,16 +218,46 @@
         });
       }
 
-      fetch(“https://api.allorigins.win/raw?url=https://zenquotes.io/api/random”)
-        .then(function(res) { return res.json(); })
-        .then(function(data) {
-          var quote = data[0];
-          var strings = [““” + quote.q.trim() + “” — “ + quote.a].concat(fallbackQuotes);
-          startTyped(strings);
+      // Method 1: Try direct fetch to zenquotes.io with better error handling
+      function fetchFromZenQuotes() {
+        console.log("Attempting to fetch from ZenQuotes...");
+        fetch("https://zenquotes.io/api/random", {
+          method: "GET",
+          headers: {
+            "Accept": "application/json",
+          }
         })
-        .catch(function() {
-          startTyped(fallbackQuotes);
-        });
+          .then(function(res) {
+            console.log("Response status:", res.status);
+            if (!res.ok) throw new Error("Network response was not ok");
+            return res.json();
+          })
+          .then(function(data) {
+            console.log("Received data:", data);
+            if (data && data[0] && data[0].q && data[0].a) {
+              var quote = data[0];
+              var quoteText = """ + quote.q.trim() + "" — " + quote.a;
+              console.log("Quote extracted:", quoteText);
+              var strings = [quoteText].concat(fallbackQuotes);
+              startTyped(strings);
+            } else {
+              console.warn("Data format unexpected, using fallback");
+              startTyped(fallbackQuotes);
+            }
+          })
+          .catch(function(error) {
+            console.error("Error fetching from ZenQuotes:", error);
+            console.log("Falling back to local quotes...");
+            startTyped(fallbackQuotes);
+          });
+      }
+
+      // Wait for page to fully load, then start the typing effect
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", fetchFromZenQuotes);
+      } else {
+        fetchFromZenQuotes();
+      }
     </script>
   </body>
 </html>
