@@ -172,16 +172,41 @@
 
     <script src="assets/vendor/typed.js/typed.min.js"></script>
     <script>
-      fetch(“https://dummyjson.com/quotes/random”)
+      const fallbackQuotes = [
+        "Breathe, and rebuild slowly.",
+        "Strength from within.",
+        "Let kindness guide you.",
+        "Growth after pain.",
+        "Your journey matters.",
+        "Embrace the scars.",
+        "Resilience is key.",
+        "Believe in your strength.",
+        "You are stronger than you think.",
+        "Small steps forward.",
+        "Light after darkness.",
+        "Begin again, gently.",
+        "Be kind, be brave.",
+        "Be your own hero.",
+      ];
+
+      function startTyped(strings) {
+        new Typed(".typing", {
+          strings: strings,
+          loop: true,
+          typeSpeed: 50,
+          backSpeed: 10,
+          backDelay: 2000,
+        });
+      }
+
+      fetch("https://dummyjson.com/quotes/random")
         .then(function(res) { return res.json(); })
         .then(function(data) {
-          new Typed(“.typing”, {
-            strings: [“”” + data.quote + “” — “ + data.author],
-            loop: true,
-            typeSpeed: 50,
-            backSpeed: 10,
-            backDelay: 2000,
-          });
+          var strings = ["“" + data.quote + "” — " + data.author].concat(fallbackQuotes);
+          startTyped(strings);
+        })
+        .catch(function() {
+          startTyped(fallbackQuotes);
         });
     </script>
   </body>
