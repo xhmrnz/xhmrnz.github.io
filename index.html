@@ -172,27 +172,63 @@
 
     <script src="assets/vendor/typed.js/typed.min.js"></script>
     <script>
+      var famousQuotes = [
+        { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+        { text: "In the middle of every difficulty lies opportunity.", author: "Albert Einstein" },
+        { text: "It does not matter how slowly you go as long as you do not stop.", author: "Confucius" },
+        { text: "Life is what happens when you're busy making other plans.", author: "John Lennon" },
+        { text: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt" },
+        { text: "You only live once, but if you do it right, once is enough.", author: "Mae West" },
+        { text: "It is during our darkest moments that we must focus to see the light.", author: "Aristotle" },
+        { text: "You will face many defeats in life, but never let yourself be defeated.", author: "Maya Angelou" },
+        { text: "The greatest glory in living lies not in never falling, but in rising every time we fall.", author: "Nelson Mandela" },
+        { text: "In the end, it's not the years in your life that count. It's the life in your years.", author: "Abraham Lincoln" }
+      ];
+      (function shuffle() {
+        for (var i = famousQuotes.length - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1));
+          var t = famousQuotes[i]; famousQuotes[i] = famousQuotes[j]; famousQuotes[j] = t;
+        }
+      })();
+
+      var quoteCount = 0;
+      var famousIndex = 0;
+
       function typeQuote(text, author) {
         new Typed(".typing", {
-          strings: ['"' + text + '" — ' + author],
+          strings: ['"' + text + '" — ' + author, ""],
           loop: false,
           typeSpeed: 40,
-          backSpeed: 15,
+          backSpeed: 20,
           backDelay: 3000,
           onComplete: function(self) {
             self.destroy();
             document.querySelector(".typing").textContent = "";
-            fetchQuote();
+            nextQuote();
           }
         });
       }
-      function fetchQuote() {
-        fetch("https://dummyjson.com/quotes/random")
-          .then(function(r) { return r.json(); })
-          .then(function(d) { typeQuote(d.quote, d.author); })
-          .catch(function() { typeQuote("The only way to do great work is to love what you do.", "Steve Jobs"); });
+
+      function nextQuote() {
+        var isFamous = (quoteCount % 4 === 3);
+        quoteCount++;
+        if (isFamous) {
+          var q = famousQuotes[famousIndex % famousQuotes.length];
+          famousIndex++;
+          typeQuote(q.text, q.author);
+        } else {
+          fetch("https://dummyjson.com/quotes/random")
+            .then(function(r) { return r.json(); })
+            .then(function(d) { typeQuote(d.quote, d.author); })
+            .catch(function() {
+              var q = famousQuotes[famousIndex % famousQuotes.length];
+              famousIndex++;
+              typeQuote(q.text, q.author);
+            });
+        }
       }
-      fetchQuote();
+
+      nextQuote();
     </script>
   </body>
 </html>
