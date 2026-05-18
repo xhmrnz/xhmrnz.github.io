@@ -172,46 +172,27 @@
 
     <script src="assets/vendor/typed.js/typed.min.js"></script>
     <script>
-      var quotes = [
-        { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
-        { text: "In the middle of every difficulty lies opportunity.", author: "Albert Einstein" },
-        { text: "It does not matter how slowly you go as long as you do not stop.", author: "Confucius" },
-        { text: "Life is what happens when you're busy making other plans.", author: "John Lennon" },
-        { text: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt" },
-        { text: "You only live once, but if you do it right, once is enough.", author: "Mae West" },
-        { text: "In order to be irreplaceable, one must always be different.", author: "Coco Chanel" },
-        { text: "It is during our darkest moments that we must focus to see the light.", author: "Aristotle" },
-        { text: "Spread love everywhere you go. Let no one ever come to you without leaving happier.", author: "Mother Teresa" },
-        { text: "When you reach the end of your rope, tie a knot in it and hang on.", author: "Franklin D. Roosevelt" },
-        { text: "Always remember that you are absolutely unique. Just like everyone else.", author: "Margaret Mead" },
-        { text: "Do not go where the path may lead, go instead where there is no path and leave a trail.", author: "Ralph Waldo Emerson" },
-        { text: "You will face many defeats in life, but never let yourself be defeated.", author: "Maya Angelou" },
-        { text: "The greatest glory in living lies not in never falling, but in rising every time we fall.", author: "Nelson Mandela" },
-        { text: "In the end, it's not the years in your life that count. It's the life in your years.", author: "Abraham Lincoln" }
-      ];
-      function shuffle() {
-        for (var i = quotes.length - 1; i > 0; i--) {
-          var j = Math.floor(Math.random() * (i + 1));
-          var tmp = quotes[i]; quotes[i] = quotes[j]; quotes[j] = tmp;
-        }
-      }
-      function startTyping() {
-        shuffle();
+      function typeQuote(text, author) {
         new Typed(".typing", {
-          strings: quotes.map(function(q) { return '"' + q.text + '" — ' + q.author; }),
+          strings: ['"' + text + '" — ' + author],
           loop: false,
           typeSpeed: 40,
           backSpeed: 15,
           backDelay: 3000,
-          startDelay: 300,
           onComplete: function(self) {
             self.destroy();
             document.querySelector(".typing").textContent = "";
-            startTyping();
+            fetchQuote();
           }
         });
       }
-      startTyping();
+      function fetchQuote() {
+        fetch("https://dummyjson.com/quotes/random")
+          .then(function(r) { return r.json(); })
+          .then(function(d) { typeQuote(d.quote, d.author); })
+          .catch(function() { typeQuote("The only way to do great work is to love what you do.", "Steve Jobs"); });
+      }
+      fetchQuote();
     </script>
   </body>
 </html>
