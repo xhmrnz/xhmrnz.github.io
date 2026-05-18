@@ -189,18 +189,29 @@
         { text: "The greatest glory in living lies not in never falling, but in rising every time we fall.", author: "Nelson Mandela" },
         { text: "In the end, it's not the years in your life that count. It's the life in your years.", author: "Abraham Lincoln" }
       ];
-      for (var i = quotes.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var tmp = quotes[i]; quotes[i] = quotes[j]; quotes[j] = tmp;
+      function shuffle() {
+        for (var i = quotes.length - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1));
+          var tmp = quotes[i]; quotes[i] = quotes[j]; quotes[j] = tmp;
+        }
       }
-      new Typed(".typing", {
-        strings: quotes.map(function(q) { return '"' + q.text + '" — ' + q.author; }),
-        loop: true,
-        typeSpeed: 40,
-        backSpeed: 15,
-        backDelay: 3000,
-        startDelay: 300,
-      });
+      function startTyping() {
+        shuffle();
+        new Typed(".typing", {
+          strings: quotes.map(function(q) { return '"' + q.text + '" — ' + q.author; }),
+          loop: false,
+          typeSpeed: 40,
+          backSpeed: 15,
+          backDelay: 3000,
+          startDelay: 300,
+          onComplete: function(self) {
+            self.destroy();
+            document.querySelector(".typing").textContent = "";
+            startTyping();
+          }
+        });
+      }
+      startTyping();
     </script>
   </body>
 </html>
