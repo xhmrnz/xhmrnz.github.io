@@ -79,6 +79,15 @@
         z-index: 0;
         opacity: 0.72;
         filter: grayscale(100%) contrast(112%);
+        transform: translate3d(var(--bg-x, 0), var(--bg-y, 0), 0) scale(1.04);
+        transition: transform 0.25s ease-out;
+      }
+
+      .spline-background spline-viewer {
+        display: block;
+        width: 100%;
+        height: 100%;
+        animation: spline-drift 14s ease-in-out infinite alternate;
       }
 
       .landing-container {
@@ -184,6 +193,106 @@
           opacity: 1;
           transform: translateY(0);
         }
+      }
+
+      @keyframes spline-drift {
+        from {
+          transform: scale(1) translate3d(0, 0, 0);
+        }
+        to {
+          transform: scale(1.025) translate3d(-0.5%, 0.8%, 0);
+        }
+      }
+
+      .depth-scene {
+        position: fixed;
+        top: 50%;
+        right: 7%;
+        width: 380px;
+        height: 380px;
+        z-index: 3;
+        pointer-events: none;
+        perspective: 900px;
+        transform: translate3d(var(--scene-x, 0), calc(-50% + var(--scene-y, 0)), 0);
+        transform-style: preserve-3d;
+        transition: transform 0.25s ease-out;
+      }
+
+      .orbit-ring {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        border: 1px solid rgba(199, 255, 94, 0.28);
+        border-radius: 50%;
+        transform-style: preserve-3d;
+      }
+
+      .orbit-ring::after {
+        content: "";
+        position: absolute;
+        top: -3px;
+        left: 50%;
+        width: 6px;
+        height: 6px;
+        background: var(--accent);
+        transform: translateX(-50%) rotate(45deg);
+        box-shadow: 0 0 12px rgba(199, 255, 94, 0.42);
+      }
+
+      .orbit-ring.one {
+        width: 330px;
+        height: 330px;
+        margin: -165px 0 0 -165px;
+        animation: orbit-one 18s linear infinite;
+      }
+
+      .orbit-ring.two {
+        width: 250px;
+        height: 250px;
+        margin: -125px 0 0 -125px;
+        border-color: rgba(244, 244, 239, 0.16);
+        animation: orbit-two 13s linear infinite reverse;
+      }
+
+      .wire-cube {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 106px;
+        height: 106px;
+        margin: -53px 0 0 -53px;
+        transform-style: preserve-3d;
+        animation: cube-turn 20s linear infinite;
+      }
+
+      .cube-face {
+        position: absolute;
+        inset: 0;
+        border: 1px solid rgba(244, 244, 239, 0.3);
+        background: rgba(244, 244, 239, 0.018);
+        backface-visibility: visible;
+      }
+
+      .cube-face.front { transform: translateZ(53px); }
+      .cube-face.back { transform: rotateY(180deg) translateZ(53px); }
+      .cube-face.right { transform: rotateY(90deg) translateZ(53px); }
+      .cube-face.left { transform: rotateY(-90deg) translateZ(53px); }
+      .cube-face.top { transform: rotateX(90deg) translateZ(53px); }
+      .cube-face.bottom { transform: rotateX(-90deg) translateZ(53px); }
+
+      @keyframes orbit-one {
+        from { transform: rotateX(68deg) rotateZ(0deg); }
+        to { transform: rotateX(68deg) rotateZ(360deg); }
+      }
+
+      @keyframes orbit-two {
+        from { transform: rotateY(66deg) rotateX(18deg) rotateZ(0deg); }
+        to { transform: rotateY(66deg) rotateX(18deg) rotateZ(360deg); }
+      }
+
+      @keyframes cube-turn {
+        from { transform: rotateX(-18deg) rotateY(0deg) rotateZ(8deg); }
+        to { transform: rotateX(342deg) rotateY(360deg) rotateZ(8deg); }
       }
 
       .social-links {
@@ -302,6 +411,10 @@
         .corner-index {
           display: none;
         }
+
+        .depth-scene {
+          display: none;
+        }
       }
 
       @media (max-width: 480px) {
@@ -324,8 +437,16 @@
           animation: none;
         }
 
-        .social-links a {
+        .social-links a,
+        .spline-background,
+        .depth-scene {
           transition: none;
+        }
+
+        .spline-background spline-viewer,
+        .orbit-ring,
+        .wire-cube {
+          animation: none;
         }
       }
     </style>
@@ -341,6 +462,19 @@
     </a>
 
     <div class="corner-index">Portfolio / 2026</div>
+
+    <div class="depth-scene" aria-hidden="true">
+      <div class="orbit-ring one"></div>
+      <div class="orbit-ring two"></div>
+      <div class="wire-cube">
+        <span class="cube-face front"></span>
+        <span class="cube-face back"></span>
+        <span class="cube-face right"></span>
+        <span class="cube-face left"></span>
+        <span class="cube-face top"></span>
+        <span class="cube-face bottom"></span>
+      </div>
+    </div>
 
     <main class="landing-container">
       <div class="eyebrow">Software engineer / Indonesia</div>
@@ -429,6 +563,35 @@
       }
 
       nextQuote();
+
+      (function enableDepthParallax() {
+        var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+        var finePointer = window.matchMedia("(pointer: fine)");
+
+        if (reduceMotion.matches || !finePointer.matches) return;
+
+        function updateDepth(event) {
+          var horizontal = event.clientX / window.innerWidth - 0.5;
+          var vertical = event.clientY / window.innerHeight - 0.5;
+          var root = document.documentElement;
+
+          root.style.setProperty("--scene-x", horizontal * 24 + "px");
+          root.style.setProperty("--scene-y", vertical * 18 + "px");
+          root.style.setProperty("--bg-x", horizontal * -10 + "px");
+          root.style.setProperty("--bg-y", vertical * -8 + "px");
+        }
+
+        function resetDepth() {
+          var root = document.documentElement;
+          root.style.setProperty("--scene-x", "0px");
+          root.style.setProperty("--scene-y", "0px");
+          root.style.setProperty("--bg-x", "0px");
+          root.style.setProperty("--bg-y", "0px");
+        }
+
+        window.addEventListener("pointermove", updateDepth, { passive: true });
+        document.documentElement.addEventListener("mouseleave", resetDepth);
+      })();
     </script>
     <!-- Cloudflare Web Analytics -->
     <script
