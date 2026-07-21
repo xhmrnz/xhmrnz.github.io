@@ -3,80 +3,164 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Syne:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
     <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet" />
     <title>xhmrnz.me</title>
     <link rel="icon" href="assets/img/black-hole.gif" type="image/gif" />
     <style>
+      :root {
+        --ink: #f4f4ef;
+        --muted: #a4aaa6;
+        --line: rgba(244, 244, 239, 0.16);
+        --accent: #c7ff5e;
+        --surface: #080b0a;
+      }
+
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
       }
 
+      html {
+        background: var(--surface);
+      }
+
       body {
-        font-family: Arial, sans-serif;
-        height: 100vh;
-        overflow: hidden;
+        min-height: 100vh;
+        min-height: 100dvh;
+        overflow-x: hidden;
         display: flex;
-        justify-content: center;
         align-items: center;
         position: relative;
-        background-color: #333;
+        isolation: isolate;
+        background: transparent;
+        color: var(--ink);
+        font-family: "Manrope", Arial, sans-serif;
+      }
+
+      body::before,
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+      }
+
+      body::before {
+        z-index: 1;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+        background-size: 64px 64px;
+        mask-image: linear-gradient(to right, black, transparent 78%);
+        -webkit-mask-image: linear-gradient(to right, black, transparent 78%);
+      }
+
+      body::after {
+        z-index: 2;
+        background:
+          linear-gradient(90deg, rgba(5, 8, 7, 0.97) 0%, rgba(5, 8, 7, 0.84) 48%, rgba(5, 8, 7, 0.2) 100%),
+          linear-gradient(180deg, rgba(5, 8, 7, 0.15), rgba(5, 8, 7, 0.72));
       }
 
       .spline-background {
-        position: absolute;
-        top: 0;
-        left: 0;
+        position: fixed;
+        inset: 0;
         width: 100%;
         height: 100%;
         z-index: 0;
+        opacity: 0.72;
+        filter: grayscale(100%) contrast(112%);
       }
 
       .landing-container {
         text-align: left;
-        padding: 20px;
-        animation: fadeIn 2s ease-in-out;
-        z-index: 1;
+        padding: 72px 8%;
+        animation: reveal 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+        z-index: 3;
         position: relative;
-        max-width: 90%;
+        max-width: 1040px;
         width: 100%;
       }
 
-      h3 {
-        font-size: 2em;
+      .eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 20px;
+        color: var(--muted);
+        font-size: 0.72rem;
         font-weight: 600;
-        margin-bottom: 10px;
-        letter-spacing: 1px;
-        text-transform: none;
-        color: #ffffff;
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
+
+      .eyebrow::before {
+        content: "";
+        width: 34px;
+        height: 1px;
+        background: var(--accent);
+        box-shadow: 0 0 14px rgba(199, 255, 94, 0.5);
+      }
+
+      h1 {
+        max-width: 780px;
+        margin-bottom: 18px;
+        color: var(--ink);
+        font-family: "Syne", Arial, sans-serif;
+        font-size: 5rem;
+        font-weight: 500;
+        letter-spacing: 0;
+        line-height: 0.94;
+      }
+
+      h1 span {
+        display: block;
+        color: rgba(244, 244, 239, 0.1);
+        -webkit-text-stroke: 1px rgba(244, 244, 239, 0.72);
       }
 
       h5 {
-        font-size: 1em;
-        margin-bottom: 15px;
-        font-weight: 300;
-        letter-spacing: 0.5px;
-        color: #ffffff;
-        min-height: 1.5em;
+        max-width: 760px;
+        min-height: 2.8em;
+        margin-bottom: 26px;
+        padding-left: 16px;
+        border-left: 1px solid var(--accent);
+        color: #d9ddd8;
+        font-size: 0.92rem;
+        font-weight: 400;
+        letter-spacing: 0;
+        line-height: 1.6;
       }
 
       p {
-        font-size: 1em;
-        line-height: 1.6;
-        letter-spacing: 0.5px;
-        margin-bottom: 15px;
-        color: #ddd;
+        max-width: 720px;
+        color: var(--muted);
+        font-size: 0.95rem;
+        letter-spacing: 0;
+        line-height: 1.8;
+      }
+
+      .intro {
+        display: flex;
+        align-items: flex-start;
+        gap: 22px;
       }
 
       .profile-photo {
-        width: 120px;
-        height: 120px;
+        flex: 0 0 auto;
+        width: 112px;
+        height: 112px;
         border-radius: 50%;
         overflow: hidden;
-        float: left;
-        margin-right: 15px;
-        margin-bottom: 5px;
+        border: 1px solid rgba(244, 244, 239, 0.28);
+        box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.025);
       }
 
       .profile-photo img {
@@ -89,58 +173,157 @@
         transform-origin: 50% 55%;
       }
 
-      @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
+      @keyframes reveal {
+        from {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
 
       .social-links {
         list-style: none;
         display: flex;
-        margin-top: 30px;
+        gap: 10px;
+        margin-top: 34px;
       }
 
       .social-links li {
-        margin: 0 10px;
-      }
-
-      .social-links li:first-child {
-        margin-left: 0;
+        margin: 0;
       }
 
       .social-links a {
-        color: #fff;
+        display: grid;
+        place-items: center;
+        width: 38px;
+        height: 38px;
+        border: 1px solid var(--line);
+        border-radius: 50%;
+        color: var(--muted);
         text-decoration: none;
-        font-size: 2rem;
-        transition: color 0.3s ease;
+        font-size: 1.05rem;
+        transition: border-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
       }
 
       .social-links a:hover {
-        color: #007bff;
+        border-color: var(--accent);
+        color: var(--accent);
+        transform: translateY(-3px);
       }
 
       .cover-button {
-        position: absolute;
-        bottom: 20px;
-        right: 25px;
-        padding: 10px 20px;
-        background-color: #000;
-        color: white;
-        font-size: 1em;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        z-index: 2;
-        transition: background-color 0.3s ease;
+        position: fixed;
+        top: 30px;
+        right: 34px;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 11px 14px;
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        background: rgba(8, 11, 10, 0.55);
+        backdrop-filter: blur(12px);
+        color: var(--ink);
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0;
+        text-decoration: none;
+        text-transform: uppercase;
+        z-index: 4;
+        transition: border-color 0.25s ease, color 0.25s ease;
       }
 
       .cover-button:hover {
-        background-color: #555;
+        border-color: var(--accent);
+        color: var(--accent);
       }
 
-      @media (max-width: 400px) {
+      .cover-button:focus-visible,
+      .social-links a:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+      }
+
+      .corner-index {
+        position: fixed;
+        right: 34px;
+        bottom: 28px;
+        z-index: 3;
+        color: rgba(244, 244, 239, 0.48);
+        font-size: 0.66rem;
+        font-weight: 600;
+        letter-spacing: 0;
+        text-transform: uppercase;
+        writing-mode: vertical-rl;
+      }
+
+      @media (max-width: 720px) {
+        body {
+          align-items: flex-start;
+        }
+
+        body::after {
+          background: rgba(5, 8, 7, 0.84);
+        }
+
+        .landing-container {
+          padding: 120px 24px 52px;
+        }
+
+        h1 {
+          font-size: 3.25rem;
+          line-height: 0.98;
+        }
+
+        .intro {
+          gap: 16px;
+        }
+
+        .profile-photo {
+          width: 84px;
+          height: 84px;
+        }
+
+        p {
+          font-size: 0.86rem;
+          line-height: 1.7;
+        }
+
+        .cover-button {
+          top: 22px;
+          right: 22px;
+        }
+
+        .corner-index {
+          display: none;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .intro {
+          display: block;
+        }
+
+        .profile-photo {
+          float: left;
+          margin: 4px 16px 8px 0;
+        }
+
+        h1 {
+          font-size: 2.75rem;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .landing-container {
+          animation: none;
+        }
+
         .social-links a {
-          font-size: 1rem;
+          transition: none;
         }
       }
     </style>
@@ -151,32 +334,39 @@
       <spline-viewer url="https://prod.spline.design/K-czgpnw8F5RfsgV/scene.splinecode"></spline-viewer>
     </div>
 
-    <button class="cover-button">Get in Touch</button>
+    <a class="cover-button" href="https://linkedin.com/in/ilhamriana">
+      Get in touch <i class="icon ion-md-arrow-up"></i>
+    </a>
 
-    <div class="landing-container">
-      <h3>Hi, you can call me ham</h3>
+    <div class="corner-index">Portfolio / 2026</div>
+
+    <main class="landing-container">
+      <div class="eyebrow">Software engineer / Indonesia</div>
+      <h1>Hi, you can <span>call me ham.</span></h1>
       <h5><span class="typing"></span></h5>
-      <div class="profile-photo">
-        <img src="assets/img/me2.png?v=7fe5afe" alt="Ilham Riana" />
+      <div class="intro">
+        <div class="profile-photo">
+          <img src="assets/img/me2.png?v=7fe5afe" alt="Ilham Riana" />
+        </div>
+        <p>
+          Meet Ilham, a software engineer who has been taking computers apart,
+          mostly in his head, since junior school. What began as curiosity about
+          code, algorithms, and how systems work has grown into more than five
+          years of building software, untangling stubborn problems, and turning
+          rough ideas into dependable tools. Armed with a laptop, too many browser
+          tabs, and a habit of asking "what if?", he keeps exploring how things
+          fit together and finding simpler ways to make technology useful for the
+          people around him.
+        </p>
       </div>
-      <p>
-        Meet Ilham, a software engineer who has been taking computers apart,
-        mostly in his head, since junior school. What began as curiosity about
-        code, algorithms, and how systems work has grown into more than five
-        years of building software, untangling stubborn problems, and turning
-        rough ideas into dependable tools. Armed with a laptop, too many browser
-        tabs, and a habit of asking "what if?", he keeps exploring how things
-        fit together and finding simpler ways to make technology useful for the
-        people around him.
-      </p>
       <ul class="social-links">
-        <li><a href="https://facebook.com/404system"><i class="icon ion-logo-facebook"></i></a></li>
-        <li><a href="https://instagram.com/xhmrnz"><i class="icon ion-logo-instagram"></i></a></li>
-        <li><a href="https://x.com/igvyousomespace"><i class="icon ion-logo-twitter"></i></a></li>
-        <li><a href="https://linkedin.com/in/ilhamriana"><i class="icon ion-logo-linkedin"></i></a></li>
-        <li><a href="https://github.com/xhmrnz"><i class="icon ion-logo-github"></i></a></li>
+        <li><a href="https://facebook.com/404system" aria-label="Facebook"><i class="icon ion-logo-facebook"></i></a></li>
+        <li><a href="https://instagram.com/xhmrnz" aria-label="Instagram"><i class="icon ion-logo-instagram"></i></a></li>
+        <li><a href="https://x.com/igvyousomespace" aria-label="X"><i class="icon ion-logo-twitter"></i></a></li>
+        <li><a href="https://linkedin.com/in/ilhamriana" aria-label="LinkedIn"><i class="icon ion-logo-linkedin"></i></a></li>
+        <li><a href="https://github.com/xhmrnz" aria-label="GitHub"><i class="icon ion-logo-github"></i></a></li>
       </ul>
-    </div>
+    </main>
 
     <script src="assets/vendor/typed.js/typed.min.js"></script>
     <script>
