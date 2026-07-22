@@ -120,12 +120,25 @@
         font-weight: 500;
         letter-spacing: 0;
         line-height: 0.94;
+        transform: perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+        transform-origin: left center;
+        transform-style: preserve-3d;
+        transition: transform 0.22s ease-out;
+        will-change: transform;
       }
 
       h1 span {
         display: block;
         color: rgba(244, 244, 239, 0.1);
         -webkit-text-stroke: 1px rgba(244, 244, 239, 0.72);
+        transform: translate3d(0, 0, 16px);
+        transition: color 0.3s ease, transform 0.3s ease, -webkit-text-stroke-color 0.3s ease;
+      }
+
+      h1:hover span {
+        color: rgba(199, 255, 94, 0.05);
+        -webkit-text-stroke-color: rgba(199, 255, 94, 0.78);
+        transform: translate3d(12px, 0, 24px);
       }
 
       h5 {
@@ -163,6 +176,10 @@
         overflow: hidden;
         border: 1px solid rgba(244, 244, 239, 0.28);
         box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.025);
+        transform: perspective(700px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+        transform-style: preserve-3d;
+        transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease-out;
+        will-change: transform;
       }
 
       .profile-photo img {
@@ -173,6 +190,17 @@
         filter: grayscale(100%) contrast(88%) brightness(105%);
         transform: scale(1.75);
         transform-origin: 50% 55%;
+        transition: filter 0.35s ease, transform 0.35s ease;
+      }
+
+      .profile-photo:hover {
+        border-color: rgba(199, 255, 94, 0.72);
+        box-shadow: 0 0 0 6px rgba(199, 255, 94, 0.045), 0 14px 44px rgba(0, 0, 0, 0.36);
+      }
+
+      .profile-photo:hover img {
+        filter: grayscale(100%) contrast(94%) brightness(112%);
+        transform: scale(1.84);
       }
 
       @keyframes reveal {
@@ -207,13 +235,15 @@
         color: var(--muted);
         text-decoration: none;
         font-size: 1.05rem;
+        transform: translate3d(var(--magnetic-x, 0px), var(--magnetic-y, 0px), 0);
         transition: border-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
+        will-change: transform;
       }
 
       .social-links a:hover {
         border-color: var(--accent);
         color: var(--accent);
-        transform: translateY(-3px);
+        transform: translate3d(var(--magnetic-x, 0px), calc(var(--magnetic-y, 0px) - 3px), 0) rotate(6deg) scale(1.08);
       }
 
       .cover-button {
@@ -235,12 +265,22 @@
         text-decoration: none;
         text-transform: uppercase;
         z-index: 4;
-        transition: border-color 0.25s ease, color 0.25s ease;
+        transform: translate3d(var(--magnetic-x, 0px), var(--magnetic-y, 0px), 0);
+        transition: border-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
+        will-change: transform;
       }
 
       .cover-button:hover {
         border-color: var(--accent);
         color: var(--accent);
+      }
+
+      .cover-button i {
+        transition: transform 0.25s ease;
+      }
+
+      .cover-button:hover i {
+        transform: rotate(45deg) translateY(-1px);
       }
 
       .cover-button:focus-visible,
@@ -325,7 +365,13 @@
           animation: none;
         }
 
-        .social-links a {
+        h1,
+        h1 span,
+        .profile-photo,
+        .profile-photo img,
+        .social-links a,
+        .cover-button,
+        .cover-button i {
           transition: none;
         }
       }
@@ -334,7 +380,7 @@
   <body>
     <canvas class="space-background" id="space-canvas" aria-hidden="true"></canvas>
 
-    <a class="cover-button" href="https://github.com/xhmrnz">
+    <a class="cover-button" href="https://github.com/xhmrnz" data-magnetic>
       Get in touch <i class="icon ion-md-arrow-up"></i>
     </a>
 
@@ -342,10 +388,10 @@
 
     <main class="landing-container">
       <div class="eyebrow">Software engineer / Indonesia</div>
-      <h1>Hi, you can <span>call me ham.</span></h1>
+      <h1 data-tilt>Hi, you can <span>call me ham.</span></h1>
       <h5><span class="typing"></span></h5>
       <div class="intro">
-        <div class="profile-photo">
+        <div class="profile-photo" data-tilt>
           <img src="assets/img/me2.png?v=7fe5afe" alt="Ilham Riana" />
         </div>
         <p>
@@ -360,11 +406,11 @@
         </p>
       </div>
       <ul class="social-links">
-        <li><a href="https://facebook.com/404system" aria-label="Facebook"><i class="icon ion-logo-facebook"></i></a></li>
-        <li><a href="https://instagram.com/xhmrnz" aria-label="Instagram"><i class="icon ion-logo-instagram"></i></a></li>
-        <li><a href="https://x.com/igvyousomespace" aria-label="X"><i class="icon ion-logo-twitter"></i></a></li>
-        <li><a href="https://linkedin.com/in/ilhamriana" aria-label="LinkedIn"><i class="icon ion-logo-linkedin"></i></a></li>
-        <li><a href="https://github.com/xhmrnz" aria-label="GitHub"><i class="icon ion-logo-github"></i></a></li>
+        <li><a href="https://facebook.com/404system" aria-label="Facebook" data-magnetic><i class="icon ion-logo-facebook"></i></a></li>
+        <li><a href="https://instagram.com/xhmrnz" aria-label="Instagram" data-magnetic><i class="icon ion-logo-instagram"></i></a></li>
+        <li><a href="https://x.com/igvyousomespace" aria-label="X" data-magnetic><i class="icon ion-logo-twitter"></i></a></li>
+        <li><a href="https://linkedin.com/in/ilhamriana" aria-label="LinkedIn" data-magnetic><i class="icon ion-logo-linkedin"></i></a></li>
+        <li><a href="https://github.com/xhmrnz" aria-label="GitHub" data-magnetic><i class="icon ion-logo-github"></i></a></li>
       </ul>
     </main>
 
@@ -411,7 +457,8 @@
 
         var diskMaterial = new THREE.ShaderMaterial({
           uniforms: {
-            time: { value: 0 }
+            time: { value: 0 },
+            intensity: { value: 1 }
           },
           vertexShader: [
             "varying vec2 localPosition;",
@@ -422,6 +469,7 @@
           ].join("\n"),
           fragmentShader: [
             "uniform float time;",
+            "uniform float intensity;",
             "varying vec2 localPosition;",
             "void main() {",
             "  float radius = length(localPosition);",
@@ -439,7 +487,8 @@
             "  float accent = pow(max(0.0, sin(angle * 3.0 + time * 0.18)), 18.0);",
             "  color = mix(color, vec3(0.78, 1.0, 0.37), accent * 0.16);",
             "  float alpha = edge * (0.12 + turbulence * 0.62 + heat * 0.22);",
-            "  gl_FragColor = vec4(color, alpha);",
+            "  color = mix(color, vec3(0.78, 1.0, 0.37), (intensity - 1.0) * 0.12);",
+            "  gl_FragColor = vec4(color, alpha * intensity);",
             "}"
           ].join("\n"),
           transparent: true,
@@ -469,6 +518,22 @@
         lensRing.rotation.x = 1.12;
         lensRing.renderOrder = 4;
         blackHole.add(lensRing);
+
+        var pulseMaterial = new THREE.MeshBasicMaterial({
+          color: 0xc7ff5e,
+          transparent: true,
+          opacity: 0,
+          depthWrite: false,
+          side: THREE.DoubleSide,
+          blending: THREE.AdditiveBlending
+        });
+        var pulseRing = new THREE.Mesh(
+          new THREE.RingGeometry(1.16, 1.2, 180),
+          pulseMaterial
+        );
+        pulseRing.rotation.x = 1.12;
+        pulseRing.renderOrder = 5;
+        blackHole.add(pulseRing);
 
         var haloCanvas = document.createElement("canvas");
         haloCanvas.width = 256;
@@ -548,6 +613,13 @@
 
         var pointerTarget = { x: 0, y: 0 };
         var pointerCurrent = { x: 0, y: 0 };
+        var hoverTarget = 0;
+        var hoverCurrent = 0;
+        var pulseStrength = 0;
+        var baseScale = 1;
+        var diskRotation = 0;
+        var dustRotation = 0;
+        var previousTime = 0;
 
         function positionScene() {
           var width = window.innerWidth;
@@ -558,39 +630,75 @@
 
           if (width < 720) {
             blackHole.position.set(0.65, 1.35, -1.5);
-            blackHole.scale.setScalar(0.78);
+            baseScale = 0.78;
           } else if (width < 1050) {
             blackHole.position.set(1.65, 0.25, -1.1);
-            blackHole.scale.setScalar(0.9);
+            baseScale = 0.9;
           } else {
             blackHole.position.set(2.55, 0, -1);
-            blackHole.scale.setScalar(1);
+            baseScale = 1;
           }
+
+          blackHole.scale.setScalar(baseScale);
         }
 
         function updatePointer(event) {
           pointerTarget.x = event.clientX / window.innerWidth - 0.5;
           pointerTarget.y = event.clientY / window.innerHeight - 0.5;
+          var horizontalDistance = pointerTarget.x - 0.3;
+          var verticalDistance = pointerTarget.y;
+          hoverTarget = Math.max(
+            0,
+            1 - Math.sqrt(horizontalDistance * horizontalDistance + verticalDistance * verticalDistance) / 0.46
+          );
         }
 
         function resetPointer() {
           pointerTarget.x = 0;
           pointerTarget.y = 0;
+          hoverTarget = 0;
+        }
+
+        function triggerGravityPulse(event) {
+          if (event.target instanceof Element && event.target.closest("a")) return;
+          pulseStrength = 1;
+          pulseRing.scale.setScalar(1);
         }
 
         function renderFrame(milliseconds) {
           var time = milliseconds * 0.001;
+          var delta = Math.min(0.05, Math.max(0.001, time - previousTime));
+          previousTime = time;
           pointerCurrent.x += (pointerTarget.x - pointerCurrent.x) * 0.035;
           pointerCurrent.y += (pointerTarget.y - pointerCurrent.y) * 0.035;
+          hoverCurrent += (hoverTarget - hoverCurrent) * 0.045;
+
+          diskRotation += delta * (0.035 + hoverCurrent * 0.19);
+          dustRotation -= delta * (0.055 + hoverCurrent * 0.26);
 
           diskMaterial.uniforms.time.value = time;
-          accretionDisk.rotation.z = time * 0.035;
-          dust.rotation.z = time * -0.055;
-          stars.rotation.y = time * 0.004;
-          blackHole.rotation.y = pointerCurrent.x * 0.12;
-          blackHole.rotation.x = pointerCurrent.y * -0.08;
-          camera.position.x = pointerCurrent.x * 0.18;
-          camera.position.y = pointerCurrent.y * -0.12;
+          diskMaterial.uniforms.intensity.value = 1 + hoverCurrent * 0.72;
+          accretionDisk.rotation.z = diskRotation;
+          dust.rotation.z = dustRotation;
+          stars.rotation.y = time * (0.004 + hoverCurrent * 0.012);
+          stars.material.size = 0.035 + hoverCurrent * 0.012;
+          lensRing.material.opacity = 0.62 + hoverCurrent * 0.28;
+          halo.material.opacity = 0.82 + hoverCurrent * 0.18;
+          blackHole.rotation.y = pointerCurrent.x * 0.22;
+          blackHole.rotation.x = pointerCurrent.y * -0.14;
+          blackHole.scale.setScalar(baseScale * (1 + hoverCurrent * 0.055));
+          camera.position.x = pointerCurrent.x * 0.28;
+          camera.position.y = pointerCurrent.y * -0.2;
+
+          if (pulseStrength > 0.002) {
+            pulseStrength *= Math.pow(0.035, delta);
+            var pulseProgress = 1 - pulseStrength;
+            pulseRing.scale.setScalar(1 + pulseProgress * 3.2);
+            pulseMaterial.opacity = pulseStrength * 0.72;
+          } else {
+            pulseMaterial.opacity = 0;
+          }
+
           camera.lookAt(0, 0, 0);
           renderer.render(scene, camera);
 
@@ -602,10 +710,52 @@
 
         if (!reduceMotion && finePointer) {
           window.addEventListener("pointermove", updatePointer, { passive: true });
+          window.addEventListener("pointerdown", triggerGravityPulse);
           document.documentElement.addEventListener("mouseleave", resetPointer);
         }
 
         requestAnimationFrame(renderFrame);
+      })();
+    </script>
+    <script>
+      (function enableSurfaceInteractions() {
+        var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        var finePointer = window.matchMedia("(pointer: fine)").matches;
+        if (reduceMotion || !finePointer) return;
+
+        document.querySelectorAll("[data-tilt]").forEach(function(element) {
+          var strength = element.classList.contains("profile-photo") ? 9 : 3;
+
+          element.addEventListener("pointermove", function(event) {
+            var bounds = element.getBoundingClientRect();
+            var horizontal = (event.clientX - bounds.left) / bounds.width - 0.5;
+            var vertical = (event.clientY - bounds.top) / bounds.height - 0.5;
+            element.style.setProperty("--tilt-x", vertical * -strength + "deg");
+            element.style.setProperty("--tilt-y", horizontal * strength + "deg");
+          });
+
+          element.addEventListener("pointerleave", function() {
+            element.style.setProperty("--tilt-x", "0deg");
+            element.style.setProperty("--tilt-y", "0deg");
+          });
+        });
+
+        document.querySelectorAll("[data-magnetic]").forEach(function(element) {
+          var strength = element.classList.contains("cover-button") ? 10 : 6;
+
+          element.addEventListener("pointermove", function(event) {
+            var bounds = element.getBoundingClientRect();
+            var horizontal = (event.clientX - (bounds.left + bounds.width / 2)) / bounds.width;
+            var vertical = (event.clientY - (bounds.top + bounds.height / 2)) / bounds.height;
+            element.style.setProperty("--magnetic-x", horizontal * strength + "px");
+            element.style.setProperty("--magnetic-y", vertical * strength + "px");
+          });
+
+          element.addEventListener("pointerleave", function() {
+            element.style.setProperty("--magnetic-x", "0px");
+            element.style.setProperty("--magnetic-y", "0px");
+          });
+        });
       })();
     </script>
     <script src="assets/vendor/typed.js/typed.min.js"></script>
