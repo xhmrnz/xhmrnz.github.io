@@ -81,6 +81,100 @@
         pointer-events: none;
       }
 
+      html.gravity-cursor-enabled,
+      html.gravity-cursor-enabled * {
+        cursor: none !important;
+      }
+
+      .gravity-cursor {
+        --cursor-x: -100px;
+        --cursor-y: -100px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        display: none;
+        width: 46px;
+        height: 46px;
+        z-index: 9999;
+        pointer-events: none;
+        opacity: 0;
+        border: 1px solid rgba(231, 238, 229, 0.5);
+        border-radius: 50%;
+        background: radial-gradient(circle, #000 0 16%, rgba(0, 0, 0, 0.94) 17% 28%, rgba(199, 255, 94, 0.08) 29% 34%, transparent 35%);
+        box-shadow: 0 0 18px rgba(199, 255, 94, 0.1), inset 0 0 10px rgba(0, 0, 0, 0.92);
+        transform: translate3d(var(--cursor-x), var(--cursor-y), 0) translate(-50%, -50%);
+        transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+        will-change: transform;
+      }
+
+      .gravity-cursor::before {
+        content: "";
+        position: absolute;
+        inset: 5px;
+        border: 1px solid transparent;
+        border-top-color: var(--accent);
+        border-right-color: rgba(244, 244, 239, 0.36);
+        border-radius: 50%;
+        animation: cursor-orbit 1.8s linear infinite;
+      }
+
+      .gravity-cursor::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #000;
+        box-shadow: 0 0 8px rgba(199, 255, 94, 0.7), 0 0 18px rgba(244, 244, 239, 0.22);
+        transform: translate(-50%, -50%);
+      }
+
+      .gravity-cursor.is-visible {
+        opacity: 1;
+      }
+
+      .gravity-cursor.is-hovering {
+        width: 58px;
+        height: 58px;
+        border-color: rgba(199, 255, 94, 0.78);
+      }
+
+      .gravity-cursor.is-pressed {
+        width: 34px;
+        height: 34px;
+      }
+
+      .gravity-dust {
+        position: fixed;
+        top: var(--dust-top);
+        left: var(--dust-left);
+        width: 2px;
+        height: 2px;
+        z-index: 9998;
+        pointer-events: none;
+        border-radius: 50%;
+        background: var(--dust-color, #f4f4ef);
+        box-shadow: 0 0 6px var(--dust-color, #f4f4ef);
+        animation: gravity-sucked 0.7s cubic-bezier(0.55, 0, 1, 0.45) forwards;
+      }
+
+      @keyframes cursor-orbit {
+        to { transform: rotate(360deg); }
+      }
+
+      @keyframes gravity-sucked {
+        from {
+          opacity: 0.82;
+          transform: translate3d(var(--dust-x), var(--dust-y), 0) scale(1);
+        }
+        to {
+          opacity: 0;
+          transform: translate3d(0, 0, 0) scale(0);
+        }
+      }
+
       .landing-container {
         text-align: left;
         padding: 72px 8%;
@@ -120,7 +214,7 @@
         font-weight: 500;
         letter-spacing: 0;
         line-height: 0.94;
-        transform: perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+        transform: translate3d(var(--gravity-x, 0px), var(--gravity-y, 0px), 0) perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
         transform-origin: left center;
         transform-style: preserve-3d;
         transition: transform 0.22s ease-out;
@@ -176,7 +270,7 @@
         overflow: hidden;
         border: 1px solid rgba(244, 244, 239, 0.28);
         box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.025);
-        transform: perspective(700px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+        transform: translate3d(var(--gravity-x, 0px), var(--gravity-y, 0px), 0) perspective(700px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
         transform-style: preserve-3d;
         transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease-out;
         will-change: transform;
@@ -235,7 +329,7 @@
         color: var(--muted);
         text-decoration: none;
         font-size: 1.05rem;
-        transform: translate3d(var(--magnetic-x, 0px), var(--magnetic-y, 0px), 0);
+        transform: translate3d(calc(var(--magnetic-x, 0px) + var(--gravity-x, 0px)), calc(var(--magnetic-y, 0px) + var(--gravity-y, 0px)), 0);
         transition: border-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
         will-change: transform;
       }
@@ -243,7 +337,7 @@
       .social-links a:hover {
         border-color: var(--accent);
         color: var(--accent);
-        transform: translate3d(var(--magnetic-x, 0px), calc(var(--magnetic-y, 0px) - 3px), 0) rotate(6deg) scale(1.08);
+        transform: translate3d(calc(var(--magnetic-x, 0px) + var(--gravity-x, 0px)), calc(var(--magnetic-y, 0px) + var(--gravity-y, 0px) - 3px), 0) rotate(6deg) scale(1.08);
       }
 
       .cover-button {
@@ -265,7 +359,7 @@
         text-decoration: none;
         text-transform: uppercase;
         z-index: 4;
-        transform: translate3d(var(--magnetic-x, 0px), var(--magnetic-y, 0px), 0);
+        transform: translate3d(calc(var(--magnetic-x, 0px) + var(--gravity-x, 0px)), calc(var(--magnetic-y, 0px) + var(--gravity-y, 0px)), 0);
         transition: border-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
         will-change: transform;
       }
@@ -374,11 +468,24 @@
         .cover-button i {
           transition: none;
         }
+
+        .gravity-cursor,
+        .gravity-dust {
+          display: none !important;
+          animation: none;
+        }
+      }
+
+      @media (pointer: fine) {
+        .gravity-cursor {
+          display: block;
+        }
       }
     </style>
   </head>
   <body>
     <canvas class="space-background" id="space-canvas" aria-hidden="true"></canvas>
+    <div class="gravity-cursor" id="gravity-cursor" aria-hidden="true"></div>
 
     <a class="cover-button" href="https://github.com/xhmrnz" data-magnetic>
       Get in touch <i class="icon ion-md-arrow-up"></i>
@@ -443,6 +550,14 @@
 
         var camera = new THREE.PerspectiveCamera(48, 1, 0.1, 60);
         camera.position.set(0, 0, 8);
+
+        scene.add(new THREE.AmbientLight(0xaeb8b4, 0.18));
+        var keyLight = new THREE.DirectionalLight(0xf4f4ef, 1.05);
+        keyLight.position.set(3, 4, 7);
+        scene.add(keyLight);
+        var rimLight = new THREE.PointLight(0xc7ff5e, 0.58, 18);
+        rimLight.position.set(2.5, 0, 2);
+        scene.add(rimLight);
 
         var blackHole = new THREE.Group();
         blackHole.rotation.z = -0.12;
@@ -585,6 +700,146 @@
         var stars = createStars(window.innerWidth < 720 ? 700 : 1500);
         scene.add(stars);
 
+        function createGalaxy(count) {
+          var positions = new Float32Array(count * 3);
+          var colors = new Float32Array(count * 3);
+          var ivory = new THREE.Color(0xe8eee8);
+          var blueGrey = new THREE.Color(0x64777d);
+          var lime = new THREE.Color(0xc7ff5e);
+
+          for (var galaxyIndex = 0; galaxyIndex < count; galaxyIndex++) {
+            var radius = Math.pow(Math.random(), 0.62) * 8.5;
+            var arm = galaxyIndex % 4;
+            var angle = arm * Math.PI * 0.5 + radius * 1.18 + (Math.random() - 0.5) * 0.7;
+            var spread = (Math.random() - 0.5) * (0.25 + radius * 0.05);
+
+            positions[galaxyIndex * 3] = Math.cos(angle) * radius;
+            positions[galaxyIndex * 3 + 1] = Math.sin(angle) * radius;
+            positions[galaxyIndex * 3 + 2] = spread;
+
+            var color = radius < 2.2 ? ivory : blueGrey;
+            if (galaxyIndex % 97 === 0) color = lime;
+            colors[galaxyIndex * 3] = color.r;
+            colors[galaxyIndex * 3 + 1] = color.g;
+            colors[galaxyIndex * 3 + 2] = color.b;
+          }
+
+          var geometry = new THREE.BufferGeometry();
+          geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+          geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+
+          return new THREE.Points(
+            geometry,
+            new THREE.PointsMaterial({
+              size: 0.04,
+              vertexColors: true,
+              transparent: true,
+              opacity: 0.34,
+              depthWrite: false,
+              sizeAttenuation: true,
+              blending: THREE.AdditiveBlending
+            })
+          );
+        }
+
+        var galaxy = createGalaxy(window.innerWidth < 720 ? 1100 : 2600);
+        galaxy.position.set(2.6, 0.25, -7);
+        galaxy.rotation.set(0.92, 0.05, -0.3);
+        scene.add(galaxy);
+
+        function createPlanetTexture(baseColor, stripeColors, spotColor) {
+          var textureCanvas = document.createElement("canvas");
+          textureCanvas.width = 512;
+          textureCanvas.height = 256;
+          var textureContext = textureCanvas.getContext("2d");
+          textureContext.fillStyle = baseColor;
+          textureContext.fillRect(0, 0, 512, 256);
+
+          for (var stripeY = 0; stripeY < 256; stripeY += 8) {
+            textureContext.globalAlpha = 0.18 + Math.random() * 0.22;
+            textureContext.fillStyle = stripeColors[Math.floor(Math.random() * stripeColors.length)];
+            textureContext.fillRect(0, stripeY, 512, 4 + Math.random() * 9);
+          }
+
+          textureContext.globalAlpha = 0.34;
+          textureContext.fillStyle = spotColor;
+          for (var spotIndex = 0; spotIndex < 34; spotIndex++) {
+            var spotX = Math.random() * 512;
+            var spotY = Math.random() * 256;
+            var spotWidth = 4 + Math.random() * 28;
+            textureContext.beginPath();
+            textureContext.ellipse(spotX, spotY, spotWidth, spotWidth * 0.35, 0, 0, Math.PI * 2);
+            textureContext.fill();
+          }
+
+          textureContext.globalAlpha = 1;
+          var texture = new THREE.CanvasTexture(textureCanvas);
+          texture.wrapS = THREE.RepeatWrapping;
+          return texture;
+        }
+
+        var celestialObjects = new THREE.Group();
+        scene.add(celestialObjects);
+
+        var gasPlanet = new THREE.Mesh(
+          new THREE.SphereGeometry(0.76, 48, 48),
+          new THREE.MeshStandardMaterial({
+            map: createPlanetTexture("#56615e", ["#89938d", "#303a39", "#aab2a8"], "#d7ddd5"),
+            roughness: 0.92,
+            metalness: 0.02
+          })
+        );
+        gasPlanet.position.set(4.8, 2.65, -4.2);
+        gasPlanet.rotation.z = -0.16;
+        celestialObjects.add(gasPlanet);
+
+        var gasRing = new THREE.Mesh(
+          new THREE.RingGeometry(1.02, 1.58, 160),
+          new THREE.MeshBasicMaterial({
+            color: 0x9ca8a1,
+            transparent: true,
+            opacity: 0.34,
+            side: THREE.DoubleSide,
+            depthWrite: false
+          })
+        );
+        gasRing.rotation.x = 1.18;
+        gasRing.rotation.z = -0.3;
+        gasPlanet.add(gasRing);
+
+        var rockyPlanet = new THREE.Mesh(
+          new THREE.SphereGeometry(0.92, 48, 48),
+          new THREE.MeshStandardMaterial({
+            map: createPlanetTexture("#29323a", ["#38464c", "#1f282d", "#566066"], "#171d21"),
+            roughness: 1,
+            metalness: 0
+          })
+        );
+        rockyPlanet.position.set(5.2, -2.25, -3.1);
+        celestialObjects.add(rockyPlanet);
+
+        var rockyAtmosphere = new THREE.Mesh(
+          new THREE.SphereGeometry(0.97, 40, 40),
+          new THREE.MeshBasicMaterial({
+            color: 0x6f9094,
+            transparent: true,
+            opacity: 0.1,
+            side: THREE.BackSide,
+            blending: THREE.AdditiveBlending
+          })
+        );
+        rockyPlanet.add(rockyAtmosphere);
+
+        var moon = new THREE.Mesh(
+          new THREE.SphereGeometry(0.25, 32, 32),
+          new THREE.MeshStandardMaterial({
+            color: 0x8b918e,
+            roughness: 1
+          })
+        );
+        moon.position.set(0.2, -3.15, -4.8);
+        celestialObjects.add(moon);
+
         var dustCount = window.innerWidth < 720 ? 350 : 800;
         var dustPositions = new Float32Array(dustCount * 3);
         for (var dustIndex = 0; dustIndex < dustCount; dustIndex++) {
@@ -619,6 +874,7 @@
         var baseScale = 1;
         var diskRotation = 0;
         var dustRotation = 0;
+        var galaxyRotation = -0.3;
         var previousTime = 0;
 
         function positionScene() {
@@ -631,12 +887,21 @@
           if (width < 720) {
             blackHole.position.set(0.65, 1.35, -1.5);
             baseScale = 0.78;
+            celestialObjects.scale.setScalar(0.52);
+            galaxy.scale.setScalar(0.66);
+            galaxy.position.x = 0.8;
           } else if (width < 1050) {
             blackHole.position.set(1.65, 0.25, -1.1);
             baseScale = 0.9;
+            celestialObjects.scale.setScalar(0.76);
+            galaxy.scale.setScalar(0.84);
+            galaxy.position.x = 1.6;
           } else {
             blackHole.position.set(2.55, 0, -1);
             baseScale = 1;
+            celestialObjects.scale.setScalar(1);
+            galaxy.scale.setScalar(1);
+            galaxy.position.x = 2.6;
           }
 
           blackHole.scale.setScalar(baseScale);
@@ -675,11 +940,13 @@
 
           diskRotation += delta * (0.035 + hoverCurrent * 0.19);
           dustRotation -= delta * (0.055 + hoverCurrent * 0.26);
+          galaxyRotation += delta * (0.003 + hoverCurrent * 0.004);
 
           diskMaterial.uniforms.time.value = time;
           diskMaterial.uniforms.intensity.value = 1 + hoverCurrent * 0.72;
           accretionDisk.rotation.z = diskRotation;
           dust.rotation.z = dustRotation;
+          galaxy.rotation.z = galaxyRotation;
           stars.rotation.y = time * (0.004 + hoverCurrent * 0.012);
           stars.material.size = 0.035 + hoverCurrent * 0.012;
           lensRing.material.opacity = 0.62 + hoverCurrent * 0.28;
@@ -687,6 +954,11 @@
           blackHole.rotation.y = pointerCurrent.x * 0.22;
           blackHole.rotation.x = pointerCurrent.y * -0.14;
           blackHole.scale.setScalar(baseScale * (1 + hoverCurrent * 0.055));
+          celestialObjects.rotation.y = pointerCurrent.x * 0.055;
+          celestialObjects.rotation.x = pointerCurrent.y * -0.035;
+          gasPlanet.material.map.offset.x = time * 0.008;
+          rockyPlanet.rotation.y += delta * 0.045;
+          moon.rotation.y += delta * 0.09;
           camera.position.x = pointerCurrent.x * 0.28;
           camera.position.y = pointerCurrent.y * -0.2;
 
@@ -756,6 +1028,113 @@
             element.style.setProperty("--magnetic-y", "0px");
           });
         });
+      })();
+    </script>
+    <script>
+      (function enableGravityCursor() {
+        var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        var finePointer = window.matchMedia("(pointer: fine)").matches;
+        var cursor = document.getElementById("gravity-cursor");
+        if (reduceMotion || !finePointer || !cursor) return;
+
+        var target = { x: -100, y: -100 };
+        var current = { x: -100, y: -100 };
+        var visible = false;
+        var lastDustTime = 0;
+        var lastDustPosition = { x: -100, y: -100 };
+        var gravityTargets = Array.prototype.slice.call(
+          document.querySelectorAll("[data-tilt], [data-magnetic]")
+        );
+
+        function spawnDust(x, y) {
+          var particle = document.createElement("span");
+          var angle = Math.random() * Math.PI * 2;
+          var radius = 18 + Math.random() * 30;
+          particle.className = "gravity-dust";
+          particle.style.setProperty("--dust-left", x + "px");
+          particle.style.setProperty("--dust-top", y + "px");
+          particle.style.setProperty("--dust-x", Math.cos(angle) * radius + "px");
+          particle.style.setProperty("--dust-y", Math.sin(angle) * radius + "px");
+          particle.style.setProperty("--dust-color", Math.random() > 0.8 ? "#c7ff5e" : "#f4f4ef");
+          document.body.appendChild(particle);
+          particle.addEventListener("animationend", function() {
+            particle.remove();
+          });
+        }
+
+        function updatePointer(event) {
+          target.x = event.clientX;
+          target.y = event.clientY;
+
+          if (!visible) {
+            visible = true;
+            current.x = target.x;
+            current.y = target.y;
+            document.documentElement.classList.add("gravity-cursor-enabled");
+            cursor.classList.add("is-visible");
+          }
+
+          var now = performance.now();
+          var distance = Math.hypot(target.x - lastDustPosition.x, target.y - lastDustPosition.y);
+          if (now - lastDustTime > 34 && distance > 7) {
+            spawnDust(target.x, target.y);
+            if (distance > 24) spawnDust(target.x, target.y);
+            lastDustTime = now;
+            lastDustPosition.x = target.x;
+            lastDustPosition.y = target.y;
+          }
+        }
+
+        function resetGravity() {
+          visible = false;
+          document.documentElement.classList.remove("gravity-cursor-enabled");
+          cursor.classList.remove("is-visible", "is-hovering", "is-pressed");
+          gravityTargets.forEach(function(element) {
+            element.style.setProperty("--gravity-x", "0px");
+            element.style.setProperty("--gravity-y", "0px");
+          });
+        }
+
+        function updateGravity() {
+          current.x += (target.x - current.x) * 0.28;
+          current.y += (target.y - current.y) * 0.28;
+          cursor.style.setProperty("--cursor-x", current.x + "px");
+          cursor.style.setProperty("--cursor-y", current.y + "px");
+
+          if (visible) {
+            var hoveredElement = document.elementFromPoint(target.x, target.y);
+            var hoveringInteractive = hoveredElement && hoveredElement.closest("a, [data-tilt]");
+            cursor.classList.toggle("is-hovering", Boolean(hoveringInteractive));
+          }
+
+          gravityTargets.forEach(function(element) {
+            if (!visible) return;
+            var bounds = element.getBoundingClientRect();
+            var centerX = bounds.left + bounds.width / 2;
+            var centerY = bounds.top + bounds.height / 2;
+            var horizontal = current.x - centerX;
+            var vertical = current.y - centerY;
+            var distance = Math.hypot(horizontal, vertical);
+            var radius = element.tagName === "H1" ? 230 : 145;
+            var force = Math.max(0, 1 - distance / radius);
+            force = force * force * 0.09;
+            element.style.setProperty("--gravity-x", horizontal * force + "px");
+            element.style.setProperty("--gravity-y", vertical * force + "px");
+          });
+
+          requestAnimationFrame(updateGravity);
+        }
+
+        window.addEventListener("pointermove", updatePointer, { passive: true });
+        window.addEventListener("pointerdown", function() {
+          cursor.classList.add("is-pressed");
+        });
+        window.addEventListener("pointerup", function() {
+          cursor.classList.remove("is-pressed");
+        });
+        document.documentElement.addEventListener("mouseleave", resetGravity);
+        window.addEventListener("blur", resetGravity);
+        requestAnimationFrame(updateGravity);
       })();
     </script>
     <script src="assets/vendor/typed.js/typed.min.js"></script>
