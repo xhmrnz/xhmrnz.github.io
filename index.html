@@ -81,100 +81,6 @@
         pointer-events: none;
       }
 
-      html.gravity-cursor-enabled,
-      html.gravity-cursor-enabled * {
-        cursor: none !important;
-      }
-
-      .gravity-cursor {
-        --cursor-x: -100px;
-        --cursor-y: -100px;
-        position: fixed;
-        top: 0;
-        left: 0;
-        display: none;
-        width: 46px;
-        height: 46px;
-        z-index: 9999;
-        pointer-events: none;
-        opacity: 0;
-        border: 1px solid rgba(231, 238, 229, 0.5);
-        border-radius: 50%;
-        background: radial-gradient(circle, #000 0 16%, rgba(0, 0, 0, 0.94) 17% 28%, rgba(199, 255, 94, 0.08) 29% 34%, transparent 35%);
-        box-shadow: 0 0 18px rgba(199, 255, 94, 0.1), inset 0 0 10px rgba(0, 0, 0, 0.92);
-        transform: translate3d(var(--cursor-x), var(--cursor-y), 0) translate(-50%, -50%);
-        transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
-        will-change: transform;
-      }
-
-      .gravity-cursor::before {
-        content: "";
-        position: absolute;
-        inset: 5px;
-        border: 1px solid transparent;
-        border-top-color: var(--accent);
-        border-right-color: rgba(244, 244, 239, 0.36);
-        border-radius: 50%;
-        animation: cursor-orbit 1.8s linear infinite;
-      }
-
-      .gravity-cursor::after {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: #000;
-        box-shadow: 0 0 8px rgba(199, 255, 94, 0.7), 0 0 18px rgba(244, 244, 239, 0.22);
-        transform: translate(-50%, -50%);
-      }
-
-      .gravity-cursor.is-visible {
-        opacity: 1;
-      }
-
-      .gravity-cursor.is-hovering {
-        width: 58px;
-        height: 58px;
-        border-color: rgba(199, 255, 94, 0.78);
-      }
-
-      .gravity-cursor.is-pressed {
-        width: 34px;
-        height: 34px;
-      }
-
-      .gravity-dust {
-        position: fixed;
-        top: var(--dust-top);
-        left: var(--dust-left);
-        width: 2px;
-        height: 2px;
-        z-index: 9998;
-        pointer-events: none;
-        border-radius: 50%;
-        background: var(--dust-color, #f4f4ef);
-        box-shadow: 0 0 6px var(--dust-color, #f4f4ef);
-        animation: gravity-sucked 0.7s cubic-bezier(0.55, 0, 1, 0.45) forwards;
-      }
-
-      @keyframes cursor-orbit {
-        to { transform: rotate(360deg); }
-      }
-
-      @keyframes gravity-sucked {
-        from {
-          opacity: 0.82;
-          transform: translate3d(var(--dust-x), var(--dust-y), 0) scale(1);
-        }
-        to {
-          opacity: 0;
-          transform: translate3d(0, 0, 0) scale(0);
-        }
-      }
-
       .landing-container {
         text-align: left;
         padding: 72px 8%;
@@ -214,7 +120,7 @@
         font-weight: 500;
         letter-spacing: 0;
         line-height: 0.94;
-        transform: translate3d(var(--gravity-x, 0px), var(--gravity-y, 0px), 0) perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+        transform: perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
         transform-origin: left center;
         transform-style: preserve-3d;
         transition: transform 0.22s ease-out;
@@ -270,7 +176,7 @@
         overflow: hidden;
         border: 1px solid rgba(244, 244, 239, 0.28);
         box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.025);
-        transform: translate3d(var(--gravity-x, 0px), var(--gravity-y, 0px), 0) perspective(700px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+        transform: perspective(700px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
         transform-style: preserve-3d;
         transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease-out;
         will-change: transform;
@@ -329,7 +235,7 @@
         color: var(--muted);
         text-decoration: none;
         font-size: 1.05rem;
-        transform: translate3d(calc(var(--magnetic-x, 0px) + var(--gravity-x, 0px)), calc(var(--magnetic-y, 0px) + var(--gravity-y, 0px)), 0);
+        transform: translate3d(var(--magnetic-x, 0px), var(--magnetic-y, 0px), 0);
         transition: border-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
         will-change: transform;
       }
@@ -337,7 +243,7 @@
       .social-links a:hover {
         border-color: var(--accent);
         color: var(--accent);
-        transform: translate3d(calc(var(--magnetic-x, 0px) + var(--gravity-x, 0px)), calc(var(--magnetic-y, 0px) + var(--gravity-y, 0px) - 3px), 0) rotate(6deg) scale(1.08);
+        transform: translate3d(var(--magnetic-x, 0px), calc(var(--magnetic-y, 0px) - 3px), 0) rotate(6deg) scale(1.08);
       }
 
       .cover-button {
@@ -359,7 +265,7 @@
         text-decoration: none;
         text-transform: uppercase;
         z-index: 4;
-        transform: translate3d(calc(var(--magnetic-x, 0px) + var(--gravity-x, 0px)), calc(var(--magnetic-y, 0px) + var(--gravity-y, 0px)), 0);
+        transform: translate3d(var(--magnetic-x, 0px), var(--magnetic-y, 0px), 0);
         transition: border-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
         will-change: transform;
       }
@@ -469,24 +375,11 @@
           transition: none;
         }
 
-        .gravity-cursor,
-        .gravity-dust {
-          display: none !important;
-          animation: none;
-        }
-      }
-
-      @media (pointer: fine) {
-        .gravity-cursor {
-          display: block;
-        }
       }
     </style>
   </head>
   <body>
     <canvas class="space-background" id="space-canvas" aria-hidden="true"></canvas>
-    <div class="gravity-cursor" id="gravity-cursor" aria-hidden="true"></div>
-
     <a class="cover-button" href="https://github.com/xhmrnz" data-magnetic>
       Get in touch <i class="icon ion-md-arrow-up"></i>
     </a>
@@ -1028,113 +921,6 @@
             element.style.setProperty("--magnetic-y", "0px");
           });
         });
-      })();
-    </script>
-    <script>
-      (function enableGravityCursor() {
-        var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        var finePointer = window.matchMedia("(pointer: fine)").matches;
-        var cursor = document.getElementById("gravity-cursor");
-        if (reduceMotion || !finePointer || !cursor) return;
-
-        var target = { x: -100, y: -100 };
-        var current = { x: -100, y: -100 };
-        var visible = false;
-        var lastDustTime = 0;
-        var lastDustPosition = { x: -100, y: -100 };
-        var gravityTargets = Array.prototype.slice.call(
-          document.querySelectorAll("[data-tilt], [data-magnetic]")
-        );
-
-        function spawnDust(x, y) {
-          var particle = document.createElement("span");
-          var angle = Math.random() * Math.PI * 2;
-          var radius = 18 + Math.random() * 30;
-          particle.className = "gravity-dust";
-          particle.style.setProperty("--dust-left", x + "px");
-          particle.style.setProperty("--dust-top", y + "px");
-          particle.style.setProperty("--dust-x", Math.cos(angle) * radius + "px");
-          particle.style.setProperty("--dust-y", Math.sin(angle) * radius + "px");
-          particle.style.setProperty("--dust-color", Math.random() > 0.8 ? "#c7ff5e" : "#f4f4ef");
-          document.body.appendChild(particle);
-          particle.addEventListener("animationend", function() {
-            particle.remove();
-          });
-        }
-
-        function updatePointer(event) {
-          target.x = event.clientX;
-          target.y = event.clientY;
-
-          if (!visible) {
-            visible = true;
-            current.x = target.x;
-            current.y = target.y;
-            document.documentElement.classList.add("gravity-cursor-enabled");
-            cursor.classList.add("is-visible");
-          }
-
-          var now = performance.now();
-          var distance = Math.hypot(target.x - lastDustPosition.x, target.y - lastDustPosition.y);
-          if (now - lastDustTime > 34 && distance > 7) {
-            spawnDust(target.x, target.y);
-            if (distance > 24) spawnDust(target.x, target.y);
-            lastDustTime = now;
-            lastDustPosition.x = target.x;
-            lastDustPosition.y = target.y;
-          }
-        }
-
-        function resetGravity() {
-          visible = false;
-          document.documentElement.classList.remove("gravity-cursor-enabled");
-          cursor.classList.remove("is-visible", "is-hovering", "is-pressed");
-          gravityTargets.forEach(function(element) {
-            element.style.setProperty("--gravity-x", "0px");
-            element.style.setProperty("--gravity-y", "0px");
-          });
-        }
-
-        function updateGravity() {
-          current.x += (target.x - current.x) * 0.28;
-          current.y += (target.y - current.y) * 0.28;
-          cursor.style.setProperty("--cursor-x", current.x + "px");
-          cursor.style.setProperty("--cursor-y", current.y + "px");
-
-          if (visible) {
-            var hoveredElement = document.elementFromPoint(target.x, target.y);
-            var hoveringInteractive = hoveredElement && hoveredElement.closest("a, [data-tilt]");
-            cursor.classList.toggle("is-hovering", Boolean(hoveringInteractive));
-          }
-
-          gravityTargets.forEach(function(element) {
-            if (!visible) return;
-            var bounds = element.getBoundingClientRect();
-            var centerX = bounds.left + bounds.width / 2;
-            var centerY = bounds.top + bounds.height / 2;
-            var horizontal = current.x - centerX;
-            var vertical = current.y - centerY;
-            var distance = Math.hypot(horizontal, vertical);
-            var radius = element.tagName === "H1" ? 230 : 145;
-            var force = Math.max(0, 1 - distance / radius);
-            force = force * force * 0.09;
-            element.style.setProperty("--gravity-x", horizontal * force + "px");
-            element.style.setProperty("--gravity-y", vertical * force + "px");
-          });
-
-          requestAnimationFrame(updateGravity);
-        }
-
-        window.addEventListener("pointermove", updatePointer, { passive: true });
-        window.addEventListener("pointerdown", function() {
-          cursor.classList.add("is-pressed");
-        });
-        window.addEventListener("pointerup", function() {
-          cursor.classList.remove("is-pressed");
-        });
-        document.documentElement.addEventListener("mouseleave", resetGravity);
-        window.addEventListener("blur", resetGravity);
-        requestAnimationFrame(updateGravity);
       })();
     </script>
     <script src="assets/vendor/typed.js/typed.min.js"></script>
