@@ -34,6 +34,8 @@
       }
 
       body {
+        --grid-parallax-x: 0px;
+        --grid-parallax-y: 0px;
         min-height: 100vh;
         min-height: 100dvh;
         overflow-x: hidden;
@@ -62,6 +64,9 @@
         background-size: 64px 64px;
         mask-image: linear-gradient(to right, black, transparent 78%);
         -webkit-mask-image: linear-gradient(to right, black, transparent 78%);
+        transform: translate3d(var(--grid-parallax-x), var(--grid-parallax-y), 0) scale(1.08);
+        transform-origin: center;
+        will-change: transform;
       }
 
       body::after {
@@ -365,6 +370,10 @@
           animation: none;
         }
 
+        body::before {
+          transform: scale(1.08);
+        }
+
         h1,
         h1 span,
         .profile-photo,
@@ -441,6 +450,15 @@
         var scene = new THREE.Scene();
         scene.fog = new THREE.FogExp2(0x030506, 0.038);
 
+        var universe = new THREE.Group();
+        var farLayer = new THREE.Group();
+        var midLayer = new THREE.Group();
+        var nearLayer = new THREE.Group();
+        universe.add(farLayer);
+        universe.add(midLayer);
+        universe.add(nearLayer);
+        scene.add(universe);
+
         var camera = new THREE.PerspectiveCamera(48, 1, 0.1, 60);
         camera.position.set(0, 0, 8);
 
@@ -454,7 +472,7 @@
 
         var blackHole = new THREE.Group();
         blackHole.rotation.z = -0.12;
-        scene.add(blackHole);
+        midLayer.add(blackHole);
 
         var eventHorizon = new THREE.Mesh(
           new THREE.SphereGeometry(0.96, 64, 64),
@@ -591,7 +609,7 @@
         }
 
         var stars = createStars(window.innerWidth < 720 ? 700 : 1500);
-        scene.add(stars);
+        farLayer.add(stars);
 
         function createGalaxy(count) {
           var positions = new Float32Array(count * 3);
@@ -638,7 +656,56 @@
         var galaxy = createGalaxy(window.innerWidth < 720 ? 1100 : 2600);
         galaxy.position.set(2.6, 0.25, -7);
         galaxy.rotation.set(0.92, 0.05, -0.3);
-        scene.add(galaxy);
+        farLayer.add(galaxy);
+
+        function createNebulaTexture(innerColor, middleColor) {
+          var textureCanvas = document.createElement("canvas");
+          textureCanvas.width = 512;
+          textureCanvas.height = 512;
+          var textureContext = textureCanvas.getContext("2d");
+          var gradient = textureContext.createRadialGradient(256, 256, 12, 256, 256, 250);
+          gradient.addColorStop(0, innerColor);
+          gradient.addColorStop(0.3, middleColor);
+          gradient.addColorStop(0.72, "rgba(16, 24, 26, 0.05)");
+          gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
+          textureContext.fillStyle = gradient;
+          textureContext.fillRect(0, 0, 512, 512);
+          return new THREE.CanvasTexture(textureCanvas);
+        }
+
+        var nebulae = new THREE.Group();
+        var nebulaSpecs = [
+          {
+            position: [3.8, 0.8, -11],
+            scale: [14, 8.5],
+            texture: createNebulaTexture("rgba(111, 144, 148, 0.22)", "rgba(35, 56, 63, 0.14)")
+          },
+          {
+            position: [5.4, -3.3, -9],
+            scale: [9, 6],
+            texture: createNebulaTexture("rgba(199, 255, 94, 0.09)", "rgba(59, 78, 56, 0.08)")
+          },
+          {
+            position: [-4.6, 3.1, -12],
+            scale: [11, 7],
+            texture: createNebulaTexture("rgba(78, 104, 121, 0.14)", "rgba(25, 38, 48, 0.08)")
+          }
+        ];
+
+        nebulaSpecs.forEach(function(spec) {
+          var nebula = new THREE.Sprite(
+            new THREE.SpriteMaterial({
+              map: spec.texture,
+              transparent: true,
+              depthWrite: false,
+              blending: THREE.AdditiveBlending
+            })
+          );
+          nebula.position.set(spec.position[0], spec.position[1], spec.position[2]);
+          nebula.scale.set(spec.scale[0], spec.scale[1], 1);
+          nebulae.add(nebula);
+        });
+        farLayer.add(nebulae);
 
         function createPlanetTexture(baseColor, stripeColors, spotColor) {
           var textureCanvas = document.createElement("canvas");
@@ -672,7 +739,7 @@
         }
 
         var celestialObjects = new THREE.Group();
-        scene.add(celestialObjects);
+        nearLayer.add(celestialObjects);
 
         var gasPlanet = new THREE.Mesh(
           new THREE.SphereGeometry(0.76, 48, 48),
@@ -733,6 +800,32 @@
         moon.position.set(0.2, -3.15, -4.8);
         celestialObjects.add(moon);
 
+        function createForegroundStars(count) {
+          var positions = new Float32Array(count * 3);
+          for (var foregroundIndex = 0; foregroundIndex < count; foregroundIndex++) {
+            positions[foregroundIndex * 3] = (Math.random() - 0.5) * 22;
+            positions[foregroundIndex * 3 + 1] = (Math.random() - 0.5) * 14;
+            positions[foregroundIndex * 3 + 2] = 0.5 + Math.random() * 5.4;
+          }
+
+          var geometry = new THREE.BufferGeometry();
+          geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+          return new THREE.Points(
+            geometry,
+            new THREE.PointsMaterial({
+              color: 0xe9eee8,
+              size: 0.022,
+              transparent: true,
+              opacity: 0.32,
+              depthWrite: false,
+              sizeAttenuation: true
+            })
+          );
+        }
+
+        var foregroundStars = createForegroundStars(window.innerWidth < 720 ? 120 : 320);
+        nearLayer.add(foregroundStars);
+
         var dustCount = window.innerWidth < 720 ? 350 : 800;
         var dustPositions = new Float32Array(dustCount * 3);
         for (var dustIndex = 0; dustIndex < dustCount; dustIndex++) {
@@ -761,6 +854,8 @@
 
         var pointerTarget = { x: 0, y: 0 };
         var pointerCurrent = { x: 0, y: 0 };
+        var scrollTarget = 0;
+        var scrollCurrent = 0;
         var hoverTarget = 0;
         var hoverCurrent = 0;
         var pulseStrength = 0;
@@ -774,6 +869,7 @@
           var width = window.innerWidth;
           var height = window.innerHeight;
           camera.aspect = width / height;
+          camera.fov = width < 720 ? 56 : 48;
           camera.updateProjectionMatrix();
           renderer.setSize(width, height, false);
 
@@ -801,14 +897,21 @@
         }
 
         function updatePointer(event) {
-          pointerTarget.x = event.clientX / window.innerWidth - 0.5;
-          pointerTarget.y = event.clientY / window.innerHeight - 0.5;
-          var horizontalDistance = pointerTarget.x - 0.3;
-          var verticalDistance = pointerTarget.y;
+          var normalizedX = event.clientX / window.innerWidth;
+          var normalizedY = event.clientY / window.innerHeight;
+          pointerTarget.x = (normalizedX - 0.5) * 2;
+          pointerTarget.y = (normalizedY - 0.5) * 2;
+          var horizontalDistance = normalizedX - 0.8;
+          var verticalDistance = normalizedY - 0.5;
           hoverTarget = Math.max(
             0,
             1 - Math.sqrt(horizontalDistance * horizontalDistance + verticalDistance * verticalDistance) / 0.46
           );
+        }
+
+        function updateScroll() {
+          var scrollableHeight = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+          scrollTarget = Math.min(Math.max(window.scrollY / scrollableHeight, 0), 1);
         }
 
         function resetPointer() {
@@ -827,9 +930,28 @@
           var time = milliseconds * 0.001;
           var delta = Math.min(0.05, Math.max(0.001, time - previousTime));
           previousTime = time;
-          pointerCurrent.x += (pointerTarget.x - pointerCurrent.x) * 0.035;
-          pointerCurrent.y += (pointerTarget.y - pointerCurrent.y) * 0.035;
+          var parallaxEase = 1 - Math.pow(0.001, delta);
+          pointerCurrent.x += (pointerTarget.x - pointerCurrent.x) * parallaxEase;
+          pointerCurrent.y += (pointerTarget.y - pointerCurrent.y) * parallaxEase;
+          scrollCurrent += (scrollTarget - scrollCurrent) * parallaxEase;
           hoverCurrent += (hoverTarget - hoverCurrent) * 0.045;
+
+          var driftX = Math.sin(time * 0.13) * 0.045;
+          var driftY = Math.cos(time * 0.1) * 0.035;
+
+          farLayer.position.x = pointerCurrent.x * -0.12 + driftX;
+          farLayer.position.y = pointerCurrent.y * 0.08 + scrollCurrent * 0.08 + driftY;
+          midLayer.position.x = pointerCurrent.x * -0.34 + driftX * 1.5;
+          midLayer.position.y = pointerCurrent.y * 0.22 + scrollCurrent * 0.18 + driftY * 1.5;
+          nearLayer.position.x = pointerCurrent.x * -0.68 + driftX * 2.1;
+          nearLayer.position.y = pointerCurrent.y * 0.44 + scrollCurrent * 0.34 + driftY * 2.1;
+          nearLayer.rotation.y = pointerCurrent.x * 0.035;
+          nearLayer.rotation.x = pointerCurrent.y * -0.02;
+
+          if (!reduceMotion) {
+            document.body.style.setProperty("--grid-parallax-x", pointerCurrent.x * -12 + "px");
+            document.body.style.setProperty("--grid-parallax-y", pointerCurrent.y * -8 + scrollCurrent * 10 + "px");
+          }
 
           diskRotation += delta * (0.035 + hoverCurrent * 0.19);
           dustRotation -= delta * (0.055 + hoverCurrent * 0.26);
@@ -840,6 +962,7 @@
           accretionDisk.rotation.z = diskRotation;
           dust.rotation.z = dustRotation;
           galaxy.rotation.z = galaxyRotation;
+          nebulae.rotation.z = Math.sin(time * 0.025) * 0.025;
           stars.rotation.y = time * (0.004 + hoverCurrent * 0.012);
           stars.material.size = 0.035 + hoverCurrent * 0.012;
           lensRing.material.opacity = 0.62 + hoverCurrent * 0.28;
@@ -852,8 +975,11 @@
           gasPlanet.material.map.offset.x = time * 0.008;
           rockyPlanet.rotation.y += delta * 0.045;
           moon.rotation.y += delta * 0.09;
-          camera.position.x = pointerCurrent.x * 0.28;
-          camera.position.y = pointerCurrent.y * -0.2;
+          foregroundStars.rotation.z = time * -0.0025;
+          foregroundStars.position.z = Math.sin(time * 0.16) * 0.08;
+          camera.position.x = pointerCurrent.x * 0.2;
+          camera.position.y = pointerCurrent.y * -0.14 + scrollCurrent * 0.08;
+          camera.position.z = 8 + Math.abs(pointerCurrent.x) * 0.04;
 
           if (pulseStrength > 0.002) {
             pulseStrength *= Math.pow(0.035, delta);
@@ -871,7 +997,9 @@
         }
 
         positionScene();
+        updateScroll();
         window.addEventListener("resize", positionScene);
+        window.addEventListener("scroll", updateScroll, { passive: true });
 
         if (!reduceMotion && finePointer) {
           window.addEventListener("pointermove", updatePointer, { passive: true });
