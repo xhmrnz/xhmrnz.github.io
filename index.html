@@ -251,10 +251,16 @@
         transform: translate3d(var(--magnetic-x, 0px), calc(var(--magnetic-y, 0px) - 3px), 0) rotate(6deg) scale(1.08);
       }
 
-      .cover-button {
+      .cover-actions {
         position: fixed;
         top: 30px;
         right: 34px;
+        display: flex;
+        gap: 10px;
+        z-index: 4;
+      }
+
+      .cover-button {
         display: inline-flex;
         align-items: center;
         gap: 10px;
@@ -269,7 +275,6 @@
         letter-spacing: 0;
         text-decoration: none;
         text-transform: uppercase;
-        z-index: 4;
         transform: translate3d(var(--magnetic-x, 0px), var(--magnetic-y, 0px), 0);
         transition: border-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
         will-change: transform;
@@ -339,7 +344,7 @@
           line-height: 1.7;
         }
 
-        .cover-button {
+        .cover-actions {
           top: 22px;
           right: 22px;
         }
@@ -389,9 +394,14 @@
   </head>
   <body>
     <canvas class="space-background" id="space-canvas" aria-hidden="true"></canvas>
-    <a class="cover-button" href="https://github.com/xhmrnz" data-magnetic>
-      Get in touch <i class="icon ion-md-arrow-up"></i>
-    </a>
+    <nav class="cover-actions" aria-label="Quick links">
+      <a class="cover-button" href="https://projects.xhmrnz.me" data-magnetic>
+        View projects <i class="icon ion-md-arrow-forward"></i>
+      </a>
+      <a class="cover-button" href="https://github.com/xhmrnz" data-magnetic>
+        Get in touch <i class="icon ion-md-arrow-up"></i>
+      </a>
+    </nav>
 
     <div class="corner-index">Portfolio / 2026</div>
 
